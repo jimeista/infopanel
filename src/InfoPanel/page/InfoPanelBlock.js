@@ -24,6 +24,7 @@ import Crimes from './Modules/Crimes'
 import Accidents from './Modules/Accidents'
 import School from './Modules/School'
 import Preschool from './Modules/Preschool'
+import Transport from './Modules/Transport'
 
 const InfoPanelBlock = () => {
   return (
@@ -81,18 +82,8 @@ const InfoPanelBlock = () => {
           <Crimes />
           <Accidents />
           <Emergency />
-          <div className='InfoPanel_block transport'>
-            <span className='InfoPanel_Title transportFlow'>
-              Мониторинг выхода общественного транспорта по часам
-            </span>
-            <div className='InfoPanel_block_info'>
-              <InfoPanelChart
-                typeChart={'HorizontalBar'}
-                option={transport_option}
-                dataSet={transport_data}
-              />
-            </div>
-          </div>
+          <Transport />
+
           <div className='InfoPanel_block openAlmaty'>
             <span className='InfoPanel_Title'>
               Мониторинг обращений Open Almaty
