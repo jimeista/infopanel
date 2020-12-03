@@ -7,7 +7,7 @@ import { InfoPanelChart } from '../InfoPanelChart'
 
 const Transport = () => {
   const [data, setData] = useState({})
-  const [loading, setLoading] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)

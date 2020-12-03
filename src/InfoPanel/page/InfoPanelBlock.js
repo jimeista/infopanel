@@ -1,10 +1,9 @@
 import React from 'react'
-import { InfoPanelChart } from './InfoPanelChart'
 
 import InfoPanelTable from './InfoPanelTable'
 import 'chartjs-plugin-piechart-outlabels'
 
-import { memorandum, CovidOptions, CovidData } from './ChartOption'
+import { memorandum } from './ChartOption'
 
 import Emergency from './Modules/Emergency'
 import Crimes from './Modules/Crimes'
@@ -14,6 +13,7 @@ import Preschool from './Modules/Preschool'
 import Transport from './Modules/Transport'
 import MBP from './Modules/MBP'
 import OpenAlmaty from './Modules/OpenAlmaty'
+import Covid from './Modules/Covid'
 
 const InfoPanelBlock = () => {
   return (
@@ -33,41 +33,7 @@ const InfoPanelBlock = () => {
           </div>
           <School />
           <Preschool />
-          <div className='InfoPanel_block covid'>
-            <div className={`header_block`}>
-              <div className={`InfoPanel_Title_wrap`}>
-                <span className='InfoPanel_Title'>Динамика Covid-19</span>
-                <span className='InfoPanel_Title'>
-                  за период с 10.10.2020 по 20.10.2020
-                </span>
-              </div>
-              <div className={`card_header_wrap`}>
-                <div className='card_header'>
-                  <span>Всего симптомных</span>
-                  <span>123</span>
-                </div>
-                <div className='card_header'>
-                  <span>Всего бессимптомных</span>
-                  <span>123</span>
-                </div>
-                <div className='card_header'>
-                  <span>Всего вылечившихся</span>
-                  <span>123</span>
-                </div>
-                <div className='card_header'>
-                  <span>Всего летальных</span>
-                  <span>123</span>
-                </div>
-              </div>
-            </div>
-            <div className='InfoPanel_block_info'>
-              <InfoPanelChart
-                typeChart={'Line'}
-                option={CovidOptions}
-                dataSet={CovidData}
-              />
-            </div>
-          </div>
+          <Covid />
           <Crimes />
           <Accidents />
           <Emergency />

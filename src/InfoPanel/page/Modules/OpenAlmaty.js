@@ -7,7 +7,7 @@ import { InfoPanelChart } from '../InfoPanelChart'
 
 const OpenAlamty = () => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
@@ -19,7 +19,6 @@ const OpenAlamty = () => {
           end: '2020-12-03',
         })
         .then((res) => {
-          console.log(res)
           setData(res.data)
           setLoading(false)
         })
