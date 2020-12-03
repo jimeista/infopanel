@@ -22,6 +22,8 @@ import {
 import Emergency from './Modules/Emergency'
 import Crimes from './Modules/Crimes'
 import Accidents from './Modules/Accidents'
+import School from './Modules/School'
+import Preschool from './Modules/Preschool'
 
 const InfoPanelBlock = () => {
   return (
@@ -39,52 +41,8 @@ const InfoPanelBlock = () => {
               <InfoPanelTable data={memorandum} />
             </div>
           </div>
-          <div className='InfoPanel_block school '>
-            <div className={`InfoPanel_block_header`}>
-              <span className='InfoPanel_Title'>Дефицит мест в школах</span>
-              <div className={`InfoPanel_block_card_wrap`}>
-                <div className='InfoPanel_block_card'>
-                  <span>Количество детей в школах</span>
-                  <span>123</span>
-                </div>
-                <div className='InfoPanel_block_card'>
-                  <span>Дефицит мест</span>
-                  <span>123</span>
-                </div>
-              </div>
-            </div>
-            <div className='InfoPanel_block_info'>
-              <InfoPanelChart
-                typeChart={'Bar'}
-                option={firstPieOption_bar}
-                dataSet={firstPieData_bar}
-              />
-            </div>
-          </div>
-          <div className='InfoPanel_block preschool'>
-            <div className={`InfoPanel_block_header`}>
-              <span className='InfoPanel_Title'>
-                Дефицит мест в детских садах
-              </span>
-              <div className={`InfoPanel_block_card_wrap`}>
-                <div className='InfoPanel_block_card'>
-                  <span>Количество детей в садиках</span>
-                  <span>123</span>
-                </div>
-                <div className='InfoPanel_block_card'>
-                  <span>Дефицит мест</span>
-                  <span>123</span>
-                </div>
-              </div>
-            </div>
-            <div className='InfoPanel_block_info'>
-              <InfoPanelChart
-                typeChart={'Bar'}
-                option={firstPieOption_bar}
-                dataSet={firstPieData_bar}
-              />
-            </div>
-          </div>
+          <School />
+          <Preschool />
           <div className='InfoPanel_block covid'>
             <div className={`header_block`}>
               <div className={`InfoPanel_Title_wrap`}>
