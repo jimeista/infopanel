@@ -602,6 +602,15 @@
   background-color: white;
 }
 
+.mbp_percentage_income_wrap {
+  position: relative;
+}
+
+.mbp_percentage_income {
+  position: absolute;
+  left: 10;
+}
+
 @media (max-width: 1100px) {
   .InfoPanel_wrap {
     display: flex;

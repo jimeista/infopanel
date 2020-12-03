@@ -119,8 +119,14 @@ const MBP = () => {
             <div className={`MBP_style_block_card`}>
               <span>Доходы</span>
               <div className={`color_progress`}>
-                <span style={{ width: `${Math.round(income_percentage)}%` }}>
-                  Исполнение на текущий год
+                <span
+                  className={'mbp_percentage_income_wrap'}
+                  style={{ width: `${Math.round(income_percentage)}%` }}
+                >
+                  <span className={'mbp_percentage_income'}>
+                    {' '}
+                    Исполнение на текущий год
+                  </span>
                 </span>
               </div>
               <span>{`${Math.round(income_percentage)}%`}</span>

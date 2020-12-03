@@ -4,20 +4,7 @@ import { InfoPanelChart } from './InfoPanelChart'
 import InfoPanelTable from './InfoPanelTable'
 import 'chartjs-plugin-piechart-outlabels'
 
-import {
-  memorandum,
-  firstPieData_bar,
-  firstPieOption_bar,
-  CovidOptions,
-  CovidData,
-  dtp_data,
-  dtp_option,
-  transport_data,
-  transport_option,
-  openAlmaty_data,
-  openAlmaty_option,
-} from './ChartOption'
-/*import InfoPanelTable from "./InfoPanelTable";*/
+import { memorandum, CovidOptions, CovidData } from './ChartOption'
 
 import Emergency from './Modules/Emergency'
 import Crimes from './Modules/Crimes'
@@ -26,6 +13,7 @@ import School from './Modules/School'
 import Preschool from './Modules/Preschool'
 import Transport from './Modules/Transport'
 import MBP from './Modules/MBP'
+import OpenAlmaty from './Modules/OpenAlmaty'
 
 const InfoPanelBlock = () => {
   return (
@@ -84,38 +72,7 @@ const InfoPanelBlock = () => {
           <Accidents />
           <Emergency />
           <Transport />
-
-          <div className='InfoPanel_block openAlmaty'>
-            <span className='InfoPanel_Title'>
-              Мониторинг обращений Open Almaty
-            </span>
-            <div className='InfoPanel_block_info openAlmaty_wrap'>
-              <div className={`openAlmaty_item`}>
-                <div className={`openAlmaty_all`}>
-                  <span>Обращения</span>
-                  <span>с 22.11.2020 по 29.11.2020</span>
-                  <span>2429</span>
-                </div>
-                <div className={`openAlmaty_item_wrap`}>
-                  <div className={`openAlmaty_item`}>
-                    <span>Жалобы</span>
-                    <span>209</span>
-                  </div>
-                  <div className={`openAlmaty_item`}>
-                    <span>Заявления </span>
-                    <span>209</span>
-                  </div>
-                </div>
-              </div>
-              <div className='openAlmaty_item_chart'>
-                <InfoPanelChart
-                  typeChart={'Bar'}
-                  option={openAlmaty_option}
-                  dataSet={openAlmaty_data}
-                />
-              </div>
-            </div>
-          </div>
+          <OpenAlmaty />
           <MBP />
         </div>
       </div>
