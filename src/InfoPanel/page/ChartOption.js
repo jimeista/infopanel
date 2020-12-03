@@ -5869,7 +5869,7 @@ export const memorandum = [
         indicatorName: "Младенческая смертность",
         plan: '8,37',
         fact: null,
-        itemUnit: "на 1000 родившихся живыми",
+        itemUnit: "на 1000 родившихся",
     },
     {
         indicatorName: "Охват детей 3-6 лет дошкольным воспитанием и обучением",
@@ -6480,6 +6480,132 @@ export const transport_option = {
         ],
         yAxes: [
             {
+                /*afterFit: function(scale) {
+                          scale.height = 350  // уменьшает размер места под У метки
+                      },*/
+                /*  barPercentage: 0.5,// - задает ширину колонки ( в минус)
+                        categoryPercentage: 1,// - задает ширину колонки ( в минус)*/
+                ticks: {
+                    min: 0,
+                    stepSize: 1,
+                    /*suggestedMin: 50,
+                            suggestedMax: 100,*/
+                    fontColor: 'rgba(255,255,255,1)', // цвет меток по ч или у
+                    /*      fontSize: 22,*/
+                },
+            },
+        ],
+    },
+    plugins: {
+        datalabels: {
+            /* backgroundColor:'rgba(0,0,0,0.26)' ,*/
+            align: 'end',
+            anchor: 'start',
+            /*  rotation: -90,*/
+            clamp: true,
+
+            color: 'rgb(255,255,255)',
+            padding: {
+                left: 2,
+                right: 2,
+                top: 2,
+                bottom: 0,
+            },
+            font: function (context) {
+                let w = context.chart.width
+                let custom_size = [
+                    [810, 12],
+                    [710, 10],
+                    [550, 5],
+                    [500, 5],
+                ]
+                let default_size = 14
+                for (let i = 0; i < custom_size.length; i++) {
+                    if (w < custom_size[i][0]) {
+                        default_size = custom_size[i][1]
+                    }
+                }
+                return {
+                    size: default_size,
+                }
+            },
+        },
+    },
+}
+/*OpenAlmaty*/
+
+export const openAlmaty_data = {
+    labels: ['Call-центр','Из соцю сети', 'Ресепшен', 'С портала', 'По талону' ],
+    datasets: [
+
+        {
+            label: "Факт",
+            backgroundColor: ["#45c374", "#e97223", "#8ccbdf", "#cdb748"],
+            data: [10, 12, 15,10, 1],
+            /*fontSize: '22'*/
+        },
+
+    ]
+}
+export const openAlmaty_option = {
+    legend: {
+        display: false,
+        position: 'top',
+        labels: {
+            boxWidth: 50,
+            fontColor: 'rgba(255,255,255,0.5)',
+            fontSize: 14,
+        },
+        onClick: function (e, t) {
+            var n = t.datasetIndex,
+                r = this.chart,
+                o = null !== r.getDatasetMeta(n).hidden && r.getDatasetMeta(n).hidden
+            r.data.datasets.forEach(function (e, t) {
+                var a = r.getDatasetMeta(t)
+                t !== n
+                    ? o
+                    ? null === a.hidden && (a.hidden = !0)
+                    : (a.hidden = null === a.hidden ? !a.hidden : null)
+                    : t === n && (a.hidden = null)
+            })
+            r.update()
+        },
+    },
+    layout: {
+        padding: {
+            left: 0,
+            right: 0,
+            top: 20,
+            bottom: 0,
+        },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+
+    /*legend: {display: false},*/
+
+    scales: {
+        reverse: false,
+        scaleLabel: {
+            display: true,
+            /* fontSize : 8,*/
+            /* fontColor: "#4a4a4a"*/
+        },
+        xAxes: [
+            {
+                /* barPercentage: 0.5,*/
+                ticks: {
+                    fontColor: 'rgba(255,255,255,1)', // this here
+                    /*fontSize: 14,*/
+                    min: 0,
+                },
+                fontColor: 'white',
+                /* stacked: true,*/
+            },
+        ],
+        yAxes: [
+            {
+                display: false,
                 /*afterFit: function(scale) {
                           scale.height = 350  // уменьшает размер места под У метки
                       },*/

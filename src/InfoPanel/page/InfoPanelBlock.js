@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { InfoPanelChart } from './InfoPanelChart'
 
 import InfoPanelTable from './InfoPanelTable'
@@ -10,20 +10,17 @@ import {
   firstPieOption_bar,
   CovidOptions,
   CovidData,
-  ChS_option,
-  ChS_data,
-  Transport_data,
-  Transport_option,
   dtp_data,
   dtp_option,
   transport_data,
   transport_option,
+  openAlmaty_data,
+  openAlmaty_option,
 } from './ChartOption'
 /*import InfoPanelTable from "./InfoPanelTable";*/
 
-import DistrictStreet from './DistrictStreet'
-import CheckBoxMenu from './CheckBoxMenu'
-import Emergency from './Emergency/Emergency'
+import Emergency from './Modules/Emergency'
+import Crimes from './Modules/Crimes'
 
 const InfoPanelBlock = () => {
   return (
@@ -122,26 +119,7 @@ const InfoPanelBlock = () => {
               />
             </div>
           </div>
-          <div className='InfoPanel_block crime'>
-            <div className={`InfoPanel_Title_wrap`}>
-              <span className='InfoPanel_Title'>Мониторинг преступности</span>
-              <div className={`header_block_crime`}>
-                <div>
-                  <span>Всего преступлений</span>
-                  <span>за период с 10.10.2020 по 20.10.2020</span>
-                </div>
-                <span>2123</span>
-              </div>
-            </div>
-
-            <div className='InfoPanel_block_info'>
-              <InfoPanelChart
-                typeChart={'HorizontalBar'}
-                option={dtp_option}
-                dataSet={dtp_data}
-              />
-            </div>
-          </div>
+          <Crimes />
           <div className='InfoPanel_block dtp'>
             <div className={`InfoPanel_Title_wrap`}>
               <span className='InfoPanel_Title'>Мониторинг преступности</span>
@@ -162,7 +140,7 @@ const InfoPanelBlock = () => {
             </div>
           </div>
           <Emergency />
-          <div className='InfoPanel_block'>
+          <div className='InfoPanel_block transport'>
             <span className='InfoPanel_Title transportFlow'>
               Мониторинг выхода общественного транспорта по часам
             </span>
@@ -179,20 +157,29 @@ const InfoPanelBlock = () => {
               Мониторинг обращений Open Almaty
             </span>
             <div className='InfoPanel_block_info openAlmaty_wrap'>
-              <div className={`openAlmaty_all`}>
-                <span>Ображения</span>
-                <span>с 22.11.2020 по 29.11.2020</span>
-                <span>2429</span>
+              <div className={`openAlmaty_item`}>
+                <div className={`openAlmaty_all`}>
+                  <span>Обращения</span>
+                  <span>с 22.11.2020 по 29.11.2020</span>
+                  <span>2429</span>
+                </div>
+                <div className={`openAlmaty_item_wrap`}>
+                  <div className={`openAlmaty_item`}>
+                    <span>Жалобы</span>
+                    <span>209</span>
+                  </div>
+                  <div className={`openAlmaty_item`}>
+                    <span>Заявления </span>
+                    <span>209</span>
+                  </div>
+                </div>
               </div>
-              <div className={`openAlmaty_item_wrap`}>
-                <div className={`openAlmaty_item`}>
-                  <span>Жалобы</span>
-                  <span>209</span>
-                </div>
-                <div className={`openAlmaty_item`}>
-                  <span>Заявления </span>
-                  <span>209</span>
-                </div>
+              <div className='openAlmaty_item_chart'>
+                <InfoPanelChart
+                  typeChart={'Bar'}
+                  option={openAlmaty_option}
+                  dataSet={openAlmaty_data}
+                />
               </div>
             </div>
           </div>
@@ -248,7 +235,26 @@ const InfoPanelBlock = () => {
                   </div>
                 </div>
               </div>
-              <div>123</div>
+              <div className={`MBP_style_block`}>
+                <div className={`MBP_style_block_card`}>
+                  <span>Расходы</span>
+                  <div className={`color_progress`}>
+                    <span style={{ width: '80%' }}>
+                      Исполнение на текущий год
+                    </span>
+                  </div>
+                  <span> 98%</span>
+                </div>
+                <div className={`MBP_style_block_card`}>
+                  <span>Доходы</span>
+                  <div className={`color_progress`}>
+                    <span style={{ width: '80%' }}>
+                      Исполнение на текущий год
+                    </span>
+                  </div>
+                  <span> 98%</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

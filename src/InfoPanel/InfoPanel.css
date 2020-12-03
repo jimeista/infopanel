@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     margin-bottom: 5px;
-
+    user-select: none;
 }
 
 .InfoPanel_title {
@@ -26,7 +26,7 @@
     display: flex;
     flex-direction: column;
     padding: 0 5px 0 5px;
-    border: 1px solid red;
+
 }
 
 .InfoPanel_title_wrap {
@@ -34,13 +34,6 @@
     height: max-content;
 }
 
-
-.InfoPanel_block {
-    width: 100%;
-    height: 100%;
-    border: 1px solid white;
-    padding: 5px;
-}
 
 .InfoPanel_Title {
     font-size: clamp(12px, 5vw, 16px);
@@ -55,8 +48,8 @@
     width: 100%;
     flex-grow: 1;
     display: grid;
-    grid-template-columns: 693px 1fr;
-    grid-template-rows: 25% 25% 25% 23% minmax(400px, 1fr) minmax(400px, 1fr) minmax(400px, 1fr) minmax(400px, 1fr);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(max-content, 25%) minmax(max-content, 25%) minmax(max-content, 25%) minmax(max-content, 25%) minmax(400px, 1fr) minmax(400px, 1fr) minmax(400px, 1fr) minmax(400px, 1fr);
     grid-gap: 5px;
     overflow-y: scroll;
 }
@@ -64,12 +57,30 @@
 .InfoPanel_block {
     width: 100%;
     height: 100%;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     padding: 5px;
+cursor: pointer;
+    border: 1px solid white;
+    border-radius: 2px;
 
+}
+
+.InfoPanel_block:hover {
+    border: 1px solid #02020280;
+    background: #414e6080;
+
+}
+.InfoPanel_block:active {
+    border: 1px solid white;
+    background: inherit;
+
+}
+
+.InfoPanel_wrap.user_1 .InfoPanel_block {
+    display: flex;
 }
 
 .InfoPanel_block_info {
@@ -139,16 +150,18 @@
 }
 
 .openAlmaty_wrap {
-    display: grid;
-    grid-template-columns: 30% 1fr;
-    width: 100%;
-    height: 100%;
-    min-height: max-content;
-    grid-gap: 5px;
+ display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: max-content 1fr;
+
 
 }
+.openAlmaty_item_chart{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
 
-.openAlmaty_item,
 .openAlmaty_all {
     width: 100%;
     height: 100%;
@@ -160,7 +173,16 @@
     border-radius: 2px;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
 }
+.openAlmaty_item{
+display: grid;
+    grid-template-columns: 60% 1fr;
+    grid-template-rows: max-content;
 
+    border-radius: 2px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
+    width: 100%;
+
+}
 .openAlmaty_item > span,
 .openAlmaty_all > span {
     width: 100%;
@@ -169,7 +191,7 @@
     max-height: max-content;
 }
 
-.openAlmaty_item > span:first-child,
+
 .openAlmaty_all > span:nth-child(1) {
     font-size: 36px;
     color: white;
@@ -195,11 +217,29 @@
 }
 .openAlmaty_item_wrap {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 5px;
+    grid-template-columns: 100%;
+    grid-template-rows: 1fr 1fr;
     height: 100%;
+grid-gap: 5px;
+    margin-left: 5px;
 }
+.openAlmaty_item_wrap .openAlmaty_item{
+    height: 100%;
+    border: 1px solid white;
+    border-radius: 2px;
+    flex-direction: column;
 
+}
+.openAlmaty_item_wrap .openAlmaty_item > span{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.openAlmaty_item > span:first-child{
+    font-size: 22px;
+    color: white;
+}
 
 .MBP_cardBlock {
  display: flex;
@@ -207,7 +247,7 @@
     align-items: center;
     justify-content: space-between;
     min-height: 100px;
-    height: 100%;
+    height: max-content;
 
     width: 100%;
     grid-gap: 5px;
@@ -221,6 +261,7 @@
     height: 100%;
     display: grid;
     grid-template-columns: max-content 1fr;
+    grid-template-rows: minmax(200px, max-content);
 
 }
 .MBP_card {
@@ -279,6 +320,7 @@
 .MBP_card_block>span:first-child {
     font-size: clamp(12px,3vw,14px);
     align-self: flex-start;
+    padding: 0 5px;
 
 }
 .MBP_card_block>span:nth-child(2) {
@@ -319,7 +361,7 @@ justify-content: space-between;
     background: #566780;
 }
 .InfoPanel_block_card > span:first-child{
-    font-size:clamp(12px, 5vw, 22px);
+    font-size:clamp(14px, 1.5vw, 22px);
     color: white;
 }
 .InfoPanel_block_card:first-child > span:last-child{
@@ -457,6 +499,151 @@ color: #f6a98c;
 }
 .first_chart_block_info .lost_text {
     color: #db7878;
+}
+.MBP_style_block{
+    width: 100%;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin-top: 10px;
+}
+.MBP_style_block_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+}
+.color_progress{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    border: 1px solid gray;
+
+
+}
+.color_progress > span{
+    height: 100%;
+    background: #558a55;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    color: white;
+    text-shadow: 2px 2px 2px rgba(0,0,0,.7);
+}
+
+.MBP_style_block_card > span:first-child{
+    font-size: 32px;
+    text-shadow: 2px 2px 2px rgba(0,0,0,.7);
+    font-weight: 600;
+    color: white;
+}
+.MBP_style_block_card > span:last-child{
+    font-size: 26px;
+    text-shadow: 2px 2px 2px rgba(0,0,0,.7);
+    font-weight: 600;
+    color: white;
+}
+.openAlmaty_item_chart{
+    height: 100%;
+}
+/*----------------user_2---------------------*/
+/* /open Almaty/ - / Общественный транспорт/*/
+
+.user_2 .InfoPanel_block.memorandum {
+    display: flex;
+}
+.user_2 .InfoPanel_block.transport {
+    display: flex;
+    grid-row: 1 /span 2;
+    grid-column: 2 / span 1;
+}
+
+.user_2 .InfoPanel_block.openAlmaty {
+    display: flex;
+    grid-row: 3 /span 2;
+    grid-column: 2 / span 1;
+}
+/*----------------user_3---------------------*/
+/* /open Almaty/ - / Covid/ - / школы/ - / садики/*/
+.user_3 .InfoPanel_block.memorandum {
+    display: flex;
+}
+.user_3 .InfoPanel_block.school  {
+    display: flex;
+    grid-row: 1 /span 2;
+    grid-column: 2 / span 1;
+}
+.user_3 .InfoPanel_block.preschool {
+    display: flex;
+    grid-row: 3 /span 2;
+    grid-column: 2 / span 1;
+}
+
+/*----------------user_4 ---------------------*/
+/*----------------user_5---------------------*/
+/*----------------user_7---------------------*/
+/* /open Almaty/ */
+
+
+.user_4 .InfoPanel_block.memorandum,
+.user_5 .InfoPanel_block.memorandum,
+.user_7 .InfoPanel_block.memorandum{
+    display: flex;
+}
+.user_4 .InfoPanel_block.openAlmaty,
+.user_5 .InfoPanel_block.openAlmaty,
+.user_7 .InfoPanel_block.openAlmaty{
+    display: flex;
+    grid-row: 1 /span 2;
+    grid-column: 2 / span 1;
+}
+
+
+
+
+/*----------------user_6---------------------*/
+/* /open Almaty/ - / Бюджет/*/
+.user_6 .InfoPanel_block.memorandum {
+    display: flex;
+}
+.user_6 .InfoPanel_block.mbp {
+    display: flex;
+    grid-row: 3 /span 2;
+    grid-column: 2 / span 1;
+}
+.user_6 .InfoPanel_block.openAlmaty {
+    display: flex;
+    grid-row: 1 /span 2;
+    grid-column: 2 / span 1;
+}
+
+.ant-table-thead > tr > td,
+.ant-table-tbody > tr > td{
+    text-align: center;
+}
+@media (max-width: 1100px) {
+
+    .InfoPanel_wrap {
+       display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+    .InfoPanel_block:first-child{
+       max-height: max-content;
+        min-height: max-content;
+        margin-bottom: 5px;
+        height: auto;
+    }
+    .InfoPanel_block{
+        max-height: max-content;
+        min-height: 400px;
+        margin-bottom: 5px;
+        height: auto;
+    }
 }
 /*.InfoPanel_cardBlock {
     display: flex;
