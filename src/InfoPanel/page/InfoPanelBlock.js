@@ -25,6 +25,7 @@ import Accidents from './Modules/Accidents'
 import School from './Modules/School'
 import Preschool from './Modules/Preschool'
 import Transport from './Modules/Transport'
+import MBP from './Modules/MBP'
 
 const InfoPanelBlock = () => {
   return (
@@ -115,80 +116,7 @@ const InfoPanelBlock = () => {
               </div>
             </div>
           </div>
-          <div className='InfoPanel_block mbp'>
-            <span className='InfoPanel_Title'>
-              Мониторинг бюджетных программ
-            </span>
-            <div className='InfoPanel_block_info'>
-              <div className='MBP_cardBlock'>
-                <div className='MBP_card_wrap'>
-                  <div className='MBP_card'>
-                    <div className='MBP_card_title'>
-                      <span>Расходы</span>
-                      <span className='MBP_card_date'>
-                        c 02.09.2020 <br /> по 02.12.2020{' '}
-                      </span>
-                    </div>
-                  </div>
-                  <div className='MBP_card_block_wrap'>
-                    <div className='MBP_card_block'>
-                      <span>План</span>
-                      <span>10 млрд</span>
-                      <span>тенге</span>
-                    </div>
-                    <div className='MBP_card_block'>
-                      <span>Факт</span>
-                      <span>6 млрд</span>
-                      <span>тенге</span>
-                    </div>
-                  </div>
-                </div>
-                <div className='MBP_card_wrap'>
-                  <div className='MBP_card'>
-                    <div className='MBP_card_title'>
-                      <span>Доходы</span>
-                      <span className='MBP_card_date'>
-                        c 02.09.2020 <br />
-                        по 02.12.2020{' '}
-                      </span>
-                    </div>
-                  </div>
-                  <div className='MBP_card_block_wrap'>
-                    <div className='MBP_card_block'>
-                      <span>План</span>
-                      <span>73 млрд</span>
-                      <span>тенге</span>
-                    </div>
-                    <div className='MBP_card_block'>
-                      <span>Факт</span>
-                      <span>0</span>
-                      <span>тенге</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className={`MBP_style_block`}>
-                <div className={`MBP_style_block_card`}>
-                  <span>Расходы</span>
-                  <div className={`color_progress`}>
-                    <span style={{ width: '80%' }}>
-                      Исполнение на текущий год
-                    </span>
-                  </div>
-                  <span> 98%</span>
-                </div>
-                <div className={`MBP_style_block_card`}>
-                  <span>Доходы</span>
-                  <div className={`color_progress`}>
-                    <span style={{ width: '80%' }}>
-                      Исполнение на текущий год
-                    </span>
-                  </div>
-                  <span> 98%</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <MBP />
         </div>
       </div>
     </div>
