@@ -21,6 +21,7 @@ import {
 
 import Emergency from './Modules/Emergency'
 import Crimes from './Modules/Crimes'
+import Accidents from './Modules/Accidents'
 
 const InfoPanelBlock = () => {
   return (
@@ -120,25 +121,7 @@ const InfoPanelBlock = () => {
             </div>
           </div>
           <Crimes />
-          <div className='InfoPanel_block dtp'>
-            <div className={`InfoPanel_Title_wrap`}>
-              <span className='InfoPanel_Title'>Мониторинг преступности</span>
-              <div className={`header_block_crime`}>
-                <div>
-                  <span>Всего нарушений</span>
-                  <span>за период с 10.10.2020 по 20.10.2020</span>
-                </div>
-                <span>2123</span>
-              </div>
-            </div>
-            <div className='InfoPanel_block_info'>
-              <InfoPanelChart
-                typeChart={'HorizontalBar'}
-                option={dtp_option}
-                dataSet={dtp_data}
-              />
-            </div>
-          </div>
+          <Accidents />
           <Emergency />
           <div className='InfoPanel_block transport'>
             <span className='InfoPanel_Title transportFlow'>

@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import { Spinner } from '../Spinner'
 import { InfoPanelChart } from '../InfoPanelChart'
-
 import { ChS_option } from '../ChartOption'
 
 const Emergency = () => {
   const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true)
     const fetch = async () => {
       await axios.get('/sc-dispatching-services/api/chs').then((res) => {
         setData(res.data.slice(res.data.length - 7, res.data.length))
+        setLoading(false)
       })
     }
 
@@ -23,11 +26,15 @@ const Emergency = () => {
       <span className='InfoPanel_Title'>Мониторинг чрезвычайных ситуаций</span>
       <div className={`chart_block`}>
         <div className='InfoPanel_block_info'>
-          <InfoPanelChart
-            typeChart={'Bar'}
-            option={ChS_option}
-            dataSet={getEmergencyChartData(data)}
-          />
+          {loading ? (
+            <Spinner />
+          ) : (
+            <InfoPanelChart
+              typeChart={'Bar'}
+              option={ChS_option}
+              dataSet={getEmergencyChartData(data)}
+            />
+          )}
         </div>
         <div className='text_info_block'>
           <div>

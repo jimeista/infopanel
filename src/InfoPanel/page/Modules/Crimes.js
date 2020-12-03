@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -38,6 +38,15 @@ const Crimes = () => {
     fetch()
   }, [])
 
+  const total_crimes_ = useMemo(() => {
+    let count = 0
+    data.forEach((i) => {
+      count = count + i.data.length
+    })
+
+    return count
+  }, [data])
+
   return (
     <div className='InfoPanel_block crime'>
       <div className={`InfoPanel_Title_wrap`}>
@@ -45,9 +54,17 @@ const Crimes = () => {
         <div className={`header_block_crime`}>
           <div>
             <span>Всего преступлений</span>
-            <span>за период с 10.10.2020 по 20.10.2020</span>
+            <span>{`за период с ${
+              data[0]
+                ? data[0].data[data[0].data.length - 1][
+                    'initiation-date-pretty'
+                  ]
+                : ''
+            } по ${
+              data[0] ? data[0].data[0]['initiation-date-pretty'] : ''
+            }`}</span>
           </div>
-          <span>2123</span>
+          <span>{total_crimes_}</span>
         </div>
       </div>
 
