@@ -22,9 +22,15 @@ const Emergency = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block ChS' onClick={() => {
-      window.open('https://sc.smartalmaty.kz/main/monitoring-emergency', '_blank')
-    }}>
+    <div
+      className='InfoPanel_block ChS'
+      onClick={() => {
+        window.open(
+          'https://sc.smartalmaty.kz/main/monitoring-emergency',
+          '_blank'
+        )
+      }}
+    >
       <span className='InfoPanel_Title'>Мониторинг чрезвычайных ситуаций</span>
       <div className={`chart_block`}>
         <div className='InfoPanel_block_info'>
@@ -108,7 +114,7 @@ const getEmergencyChartData = (data) => {
 
   let datasets = [
     {
-      label: 'ЧС',
+      label: 'ЧС, в том числе:',
       backgroundColor: '#d3b521',
       data: data.map(
         (i) => i.values.find((v) => v.type === 'ЧС')['count-emergencies']
@@ -116,7 +122,7 @@ const getEmergencyChartData = (data) => {
       /*fontSize: '22'*/
     },
     {
-      label: 'из них пожаров',
+      label: 'пожары',
       backgroundColor: '#be4c4c',
       data: data.map(
         (i) => i.values.find((v) => v.type === 'ЧС')['fired-emergencies']
@@ -124,7 +130,7 @@ const getEmergencyChartData = (data) => {
       /*fontSize: '22'*/
     },
     {
-      label: 'из них прочее',
+      label: 'прочее',
       backgroundColor: '#4a90e2',
       data: data.map(
         (i) => i.values.find((v) => v.type === 'ЧС')['other-emergencies']

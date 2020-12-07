@@ -1,36 +1,39 @@
-import React from "react";
-import {Table} from "antd";
+import React from 'react'
+import { Table } from 'antd'
 
-const InfoPanelTable = ({data}) => {
-    const columns = [
-        {
-            /**/
-            title: "Индикатор",
-            dataIndex: "indicatorName",
+const InfoPanelTable = ({ data }) => {
+  const columns = [
+    {
+      /**/
+      title: 'Индикатор',
+      dataIndex: 'indicatorName',
+      key: 'indicatorName',
+    },
+    {
+      /**/
+      title: 'План',
+      dataIndex: 'plan',
+      key: 'plan',
+    },
+    {
+      /**/
+      title: (
+        <span>
+          Факт <br /> 9 мес.
+        </span>
+      ),
+      dataIndex: 'fact',
+      key: 'fact',
+    },
+    {
+      /**/
+      title: 'Ед. изм',
+      dataIndex: 'itemUnit',
+      key: 'itemUnit',
+    },
+  ]
 
-        },
-        {
-            /**/
-            title: "План",
-            dataIndex: "plan",
+  return <Table columns={columns} dataSource={data} pagination={false} />
+}
 
-        },
-        {
-            /**/
-            title: "Факт ",
-            dataIndex: "fact",
-
-        },
-        {
-            /**/
-            title: "Ед. изм",
-            dataIndex: "itemUnit",
-
-        },
-
-    ];
-
-    return <Table columns={columns} dataSource={data} pagination={false}/>;
-};
-
-export default InfoPanelTable;
+export default InfoPanelTable

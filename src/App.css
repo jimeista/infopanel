@@ -2,7 +2,7 @@
   text-align: center;
 }
 body {
-  background: #282c34;
+  background: inherit;
 }
 .App-logo {
   height: 40vmin;

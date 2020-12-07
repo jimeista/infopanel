@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  Line,
-  Bar,
-  Doughnut,
-  Pie,
-  Chart,
-  HorizontalBar,
-} from "react-chartjs-3";
-import datalabels from 'chartjs-plugin-datalabels';
+import React from 'react'
+import { Line, Bar, Doughnut, Pie, Chart, HorizontalBar } from 'react-chartjs-3'
+
 export const InfoPanelChart = ({
   option,
   dataSet,
@@ -16,56 +9,56 @@ export const InfoPanelChart = ({
   isActiveChart,
 }) => {
   switch (typeChart) {
-    case "Line":
+    case 'Line':
       return (
         <Line
           data={dataSet}
           options={option}
           redraw={isActiveMap || isActiveChart}
         />
-      );
-    case "Bar":
+      )
+    case 'Bar':
       return (
         <Bar
           data={dataSet}
           options={option}
           redraw={isActiveMap || isActiveChart}
         />
-      );
-    case "Doughnut":
+      )
+    case 'Doughnut':
       return (
         <Doughnut
           data={dataSet}
           options={option}
           redraw={isActiveMap || isActiveChart}
         />
-      );
-    case "Pie":
+      )
+    case 'Pie':
       return (
         <Pie
           data={dataSet}
           options={option}
           redraw={isActiveMap || isActiveChart}
         />
-      );
-    case "Chart":
+      )
+    case 'Chart':
       return (
         <Chart
           data={dataSet}
           options={option}
           redraw={isActiveMap || isActiveChart}
         />
-      );
-    case "HorizontalBar":
+      )
+    case 'HorizontalBar':
       return (
         <HorizontalBar
           data={dataSet}
           options={option}
           redraw={isActiveMap || isActiveChart}
         />
-      );
+      )
     // eslint-disable-next-line no-unused-expressions
     default:
-      return <></>;
+      return <></>
   }
-};
+}

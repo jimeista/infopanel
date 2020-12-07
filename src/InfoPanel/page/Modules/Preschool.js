@@ -43,7 +43,7 @@ const PreSchool = () => {
         </span>
         <div className={`InfoPanel_block_card_wrap`}>
           <div className='InfoPanel_block_card'>
-            <span>Количество детей в садиках</span>
+            <span>Количество детей в детских садах</span>
             <span>{getTotalStudentsCount(data)}</span>
           </div>
           <div className='InfoPanel_block_card'>
@@ -57,7 +57,7 @@ const PreSchool = () => {
           <InfoPanelChart
             typeChart={'Bar'}
             option={firstPieOption_bar}
-            dataSet={() => firstPieData_bar(data)}
+            dataSet={firstPieData_bar(data)}
           />
         ) : (
           <Spinner />
@@ -131,16 +131,18 @@ const firstPieData_bar = (data) => {
     labels: districts.map((i) => i.split(' ')[0]),
     datasets: [
       {
-        label: 'проектная мощность',
+        label: 'Проектная мощность',
         backgroundColor: '#4caf50',
         stack: 'Stack 0',
         data: storage,
+        minBarLength: 12,
       },
       {
         label: 'Дефицит мест',
         backgroundColor: '#f75b5b',
         stack: 'Stack 0',
         data: fullness,
+        minBarLength: 17,
       },
     ],
   }

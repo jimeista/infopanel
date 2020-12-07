@@ -18,19 +18,13 @@ const Memorandum = () => {
           .get(`/sc-analytic-indicators/api/indicators/${m.id}/indexes`)
           .then((res) => {
             let item = res.data.find((i) => i.date === '2020-12-31')
-            ob[m.indicatorName] = item
-              ? {
-                  indicatorName: m.indicatorName,
-                  fact: item.fact ? item.fact : '-',
-                  plan: item.planned ? item.planned : '-',
-                  itemUnit: item.measurement ? item.measurement : '-',
-                }
-              : {
-                  indicatorName: m.indicatorName,
-                  plan: '-',
-                  fact: '-',
-                  itemUnit: '-',
-                }
+            ob[m.indicatorName] = {
+              key: m.indicatorName,
+              indicatorName: m.indicatorName,
+              fact: item && item.fact ? item.fact : '-',
+              plan: item && item.planned ? item.planned : '-',
+              itemUnit: item && item.measurement ? item.measurement : '-',
+            }
           })
       }
       setData(ob)
@@ -58,7 +52,7 @@ const memorandum = [
   {
     item: 1,
     indicatorName: 'Индекс физического объема валового регионального продукта',
-    id: 10303,
+    id: 6612,
   },
   {
     item: 2,

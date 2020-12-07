@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 
 import { dtp_option } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
@@ -22,7 +23,11 @@ const Accidents = () => {
           districts.forEach((d) => {
             ob = {
               ...ob,
-              [d]: res.data.filter((i) => i['region'].includes(d)),
+              [d]: res.data.filter((i) => {
+                if (i['region'].includes(d)) {
+                  return i
+                }
+              }),
             }
           })
           setLoading(false)
@@ -47,9 +52,15 @@ const Accidents = () => {
   }, [data])
 
   return (
-    <div className='InfoPanel_block dtp' onClick={() => {
-      window.open('https://sc.smartalmaty.kz/main/monitoring-road-accidents', '_blank')
-    }}>
+    <div
+      className='InfoPanel_block dtp'
+      onClick={() => {
+        window.open(
+          'https://sc.smartalmaty.kz/main/monitoring-road-accidents',
+          '_blank'
+        )
+      }}
+    >
       <div className={`InfoPanel_Title_wrap`}>
         <span className='InfoPanel_Title'>Мониторинг ДТП</span>
         <div className={`header_block_crime`}>

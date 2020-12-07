@@ -13,6 +13,10 @@ const Covid = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    axios
+      .get('https://covid19.smartalmaty.kz/api/snapshots/dailypatients')
+      .then((res) => console.log(res))
+
     const fetch = async () => {
       await axios
         .get(
@@ -28,9 +32,12 @@ const Covid = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block covid'   onClick={() => {
-      window.open('https://sc.smartalmaty.kz/main/covid-19', '_blank')
-    }}>
+    <div
+      className='InfoPanel_block covid'
+      onClick={() => {
+        window.open('https://sc.smartalmaty.kz/main/covid-19', '_blank')
+      }}
+    >
       <div className={`header_block`}>
         <div className={`InfoPanel_Title_wrap`}>
           <span className='InfoPanel_Title'>Динамика Covid-19</span>
@@ -62,7 +69,7 @@ const Covid = () => {
           <InfoPanelChart
             typeChart={'Line'}
             option={CovidOptions}
-            dataSet={() => CovidData(data)}
+            dataSet={CovidData(data)}
           />
         ) : (
           <Spinner />
@@ -112,7 +119,7 @@ const CovidData = (data) => {
       {
         label: 'Вылечилось (чел.)',
         fill: false,
-       /* hidden: true,*/
+        /* hidden: true,*/
         pointBackgroundColor: '#00ff00',
         pointBorderColor: 'white',
         borderWidth: 1,
@@ -122,7 +129,7 @@ const CovidData = (data) => {
       {
         label: 'Летальных исходов (чел.)',
         fill: false,
-    /*    hidden: true,*/
+        /*    hidden: true,*/
         pointBackgroundColor: '#000000',
         pointBorderColor: 'white',
         borderWidth: 1,
@@ -133,7 +140,7 @@ const CovidData = (data) => {
       {
         label: 'Бессимптомных (чел.)',
         fill: false,
-       /* hidden: true,*/
+        /* hidden: true,*/
         pointBackgroundColor: '#fff200',
         pointBorderColor: 'white',
         borderWidth: 1,

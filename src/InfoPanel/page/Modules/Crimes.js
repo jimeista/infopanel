@@ -14,19 +14,27 @@ const Crimes = () => {
     setLoading(true)
     const fetch = async () => {
       let ob = {}
-      await axios.post('/sc-public-safety/api/crimes', {}).then((res) => {
-        districts.forEach((d) => {
-          ob = {
-            ...ob,
-            [d]: res.data
-              .filter((i) => i['government-agency'].includes(d))
-              .sort((a, b) =>
-                strcmp(b['initiation-date-pretty'], a['initiation-date-pretty'])
-              ),
-          }
+      await axios
+        .post('/sc-public-safety/api/crimes', {
+          // start: '2020-10-30',
+          // end: moment().format('YYYY-MM-DD'),
         })
-        setLoading(false)
-      })
+        .then((res) => {
+          districts.forEach((d) => {
+            ob = {
+              ...ob,
+              [d]: res.data
+                .filter((i) => i['government-agency'].includes(d))
+                .sort((a, b) =>
+                  strcmp(
+                    b['initiation-date-pretty'],
+                    a['initiation-date-pretty']
+                  )
+                ),
+            }
+          })
+          setLoading(false)
+        })
 
       let data_ = Object.keys(ob).map((key) => ({
         value: key,
@@ -48,9 +56,15 @@ const Crimes = () => {
   }, [data])
 
   return (
-    <div className='InfoPanel_block crime' onClick={() => {
-      window.open('https://sc.smartalmaty.kz/main/monitoring-crimes', '_blank')
-    }}>
+    <div
+      className='InfoPanel_block crime'
+      onClick={() => {
+        window.open(
+          'https://sc.smartalmaty.kz/main/monitoring-crimes',
+          '_blank'
+        )
+      }}
+    >
       <div className={`InfoPanel_Title_wrap`}>
         <span className='InfoPanel_Title'>Мониторинг преступности</span>
         <div className={`header_block_crime`}>

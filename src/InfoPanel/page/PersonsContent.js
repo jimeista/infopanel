@@ -30,6 +30,7 @@ const PersonsContent = (props) => {
       {users.map((value, index) => {
         return (
           <div
+            key={index}
             className={`card_block_unit_wrap`}
             onClick={() => {
               props.setCurrentAkim(index + 1)
@@ -44,7 +45,7 @@ const PersonsContent = (props) => {
 
               <div>
                 {value['supervised-organisations'].map((el) => (
-                  <span>
+                  <span key={el.abbreviation}>
                     {el.abbreviation ? el.abbreviation : 'Аким города'}
                   </span>
                 ))}
