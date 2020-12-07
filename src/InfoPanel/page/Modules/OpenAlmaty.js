@@ -28,7 +28,9 @@ const OpenAlamty = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block openAlmaty'>
+    <div className='InfoPanel_block openAlmaty' onClick={() => {
+      window.open('https://sc.smartalmaty.kz/main/openAlmaty', '_blank')
+    }}>
       <span className='InfoPanel_Title'>Мониторинг обращений Open Almaty</span>
       <div className='InfoPanel_block_info openAlmaty_wrap'>
         <div className={`openAlmaty_item`}>

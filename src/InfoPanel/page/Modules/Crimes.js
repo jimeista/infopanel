@@ -48,7 +48,9 @@ const Crimes = () => {
   }, [data])
 
   return (
-    <div className='InfoPanel_block crime'>
+    <div className='InfoPanel_block crime' onClick={() => {
+      window.open('https://sc.smartalmaty.kz/main/monitoring-crimes', '_blank')
+    }}>
       <div className={`InfoPanel_Title_wrap`}>
         <span className='InfoPanel_Title'>Мониторинг преступности</span>
         <div className={`header_block_crime`}>

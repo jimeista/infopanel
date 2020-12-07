@@ -15,6 +15,7 @@ const School = () => {
     const fetch = async () => {
       let ob = {}
       await axios.get('/sc-edu-institutions/api/schools').then((res) => {
+
         districts.forEach((d) => {
           let arr = res.data.filter((i) => i.district === d)
           ob = { ...ob, [d]: arr }
@@ -28,32 +29,37 @@ const School = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block school '>
-      <div className={`InfoPanel_block_header`}>
-        <span className='InfoPanel_Title'>Дефицит мест в школах</span>
-        <div className={`InfoPanel_block_card_wrap`}>
-          <div className='InfoPanel_block_card'>
-            <span>Количество детей в школах</span>
-            <span>{getTotalStudentsCount(data)}</span>
+
+        <div className='InfoPanel_block school '
+             onClick={() => {
+               window.open('https://sc.smartalmaty.kz/main/monitoring-schools', '_blank')
+             }}>
+          <div className={`InfoPanel_block_header`}>
+            <span className='InfoPanel_Title'>Дефицит мест в школах по районам</span>
+            <div className={`InfoPanel_block_card_wrap`}>
+              <div className='InfoPanel_block_card'>
+                <span>Количество детей в школах</span>
+                <span>{getTotalStudentsCount(data)}</span>
+              </div>
+              <div className='InfoPanel_block_card'>
+                <span>Дефицит мест</span>
+                <span>{getTotalCountFullness(data)}</span>
+              </div>
+            </div>
           </div>
-          <div className='InfoPanel_block_card'>
-            <span>Дефицит мест</span>
-            <span>{getTotalCountFullness(data)}</span>
+          <div className='InfoPanel_block_info'>
+            {!loading ? (
+                <InfoPanelChart
+                    typeChart={'Bar'}
+                    option={firstPieOption_bar}
+                    dataSet={() => firstPieData_bar(data)}
+                />
+            ) : (
+                <Spinner/>
+            )}
           </div>
         </div>
-      </div>
-      <div className='InfoPanel_block_info'>
-        {!loading ? (
-          <InfoPanelChart
-            typeChart={'Bar'}
-            option={firstPieOption_bar}
-            dataSet={() => firstPieData_bar(data)}
-          />
-        ) : (
-          <Spinner />
-        )}
-      </div>
-    </div>
+
   )
 }
 
@@ -75,7 +81,7 @@ const getTotalStudentsCount = (data) => {
 
   Object.keys(data).forEach((key) => {
     data[key].forEach((i) => {
-      count = count + i['general-storage']
+      count = count + i['capacity']
     })
   })
 
@@ -87,9 +93,7 @@ const getTotalCountFullness = (data) => {
 
   Object.keys(data).forEach((key) => {
     data[key].forEach((i) => {
-      if (i.fullness === 'Дефицит') {
-        count++
-      }
+        count = count + i['general-storage']
     })
   })
 
@@ -104,36 +108,40 @@ const firstPieData_bar = (data) => {
   Object.keys(data).forEach((key) => {
     let count = 0
     data[key].forEach((i) => {
-      count = count + i['general-storage']
+
+      count = count + i['capacity']
     })
+
     storage.push(count)
   })
 
   Object.keys(data).forEach((key) => {
     let count = 0
     data[key].forEach((i) => {
-      if (i.fullness === 'Дефицит') {
-        count++
-      }
+        count = count + i['general-storage']
     })
+
     fullness.push(count)
   })
 
   return {
-    labels: districts,
+    labels: districts.map(i => i.split(" ")[0]),
     datasets: [
       {
         label: 'проектная мощность',
         backgroundColor: '#4caf50',
         stack: 'Stack 0',
         data: storage,
+
       },
       {
-        label: 'Фактическая наполняемость',
+        label: 'Дефицит мест',
         backgroundColor: '#f75b5b',
         stack: 'Stack 0',
         data: fullness,
+
       },
     ],
+
   }
 }

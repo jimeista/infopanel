@@ -1,49 +1,64 @@
-import React from 'react'
+import React, { useState } from "react";
 
-import InfoPanelTable from './InfoPanelTable'
-import 'chartjs-plugin-piechart-outlabels'
+import "chartjs-plugin-piechart-outlabels";
 
-import { memorandum } from './ChartOption'
-
-import Emergency from './Modules/Emergency'
-import Crimes from './Modules/Crimes'
-import Accidents from './Modules/Accidents'
-import School from './Modules/School'
-import Preschool from './Modules/Preschool'
-import Transport from './Modules/Transport'
-import MBP from './Modules/MBP'
-import OpenAlmaty from './Modules/OpenAlmaty'
-import Covid from './Modules/Covid'
+import Emergency from "./Modules/Emergency";
+import Crimes from "./Modules/Crimes";
+import Accidents from "./Modules/Accidents";
+import School from "./Modules/School";
+import Preschool from "./Modules/Preschool";
+import Transport from "./Modules/Transport";
+import MBP from "./Modules/MBP";
+import OpenAlmaty from "./Modules/OpenAlmaty";
+import Covid from "./Modules/Covid";
+import Memorandum from "./Modules/Memorandum";
+import PersonsContent from "./PersonsContent";
 
 const InfoPanelBlock = () => {
-  return (
-    <div className='InfoPanel_main'>
-      <div className='InfoPanel_wrapper'>
-        <div className='InfoPanel_title_wrap'>
-          <span className='InfoPanel_title'>Информационная панель</span>
-        </div>
-        <div className='InfoPanel_wrap user_1'>
-          <div className='InfoPanel_block memorandum'>
-            <span className='InfoPanel_Title'>
-              Меморандум 2020 года между Акимом и Премьер-Министром РК
-            </span>
-            <div className='InfoPanel_block_info'>
-              <InfoPanelTable data={memorandum} />
-            </div>
-          </div>
-          <School />
-          <Preschool />
-          <Covid />
-          <Crimes />
-          <Accidents />
-          <Emergency />
-          <Transport />
-          <OpenAlmaty />
-          <MBP />
-        </div>
-      </div>
-    </div>
-  )
-}
+ const toogleRightSide = () => {
+  document
+   .querySelector(".Home_navigation_page_right_side")
+   .classList.toggle("active");
+ };
+ const [currentAkim, setCurrentAkim] = useState(1);
+ const handleDragShowHide = (event) => {
+  if (event.clientY === 0) {
+   return;
+  }
+ };
 
-export default InfoPanelBlock
+ return (
+  <div className="InfoPanel_main">
+   <div className="InfoPanel_wrapper">
+    <div className="InfoPanel_title_wrap">
+     <span className="InfoPanel_title main">Информационная панель</span>
+    </div>
+    <div className={`InfoPanel_wrap user_${currentAkim}`}>
+     <Memorandum />
+     <School />
+     <Preschool />
+     <Covid />
+     <Crimes />
+     <Accidents />
+     <Emergency />
+     <Transport />
+     <OpenAlmaty />
+     <MBP />
+    </div>
+   </div>
+   <div className="Home_navigation_page_right_side">
+    <button
+     id="Home_navigation_page_right_side_showAndHide"
+     className="Home_navigation_page_right_side_showAndHide"
+     onClick={toogleRightSide}
+     onDrag={handleDragShowHide}
+    >
+     <span>Навигация по списку людей</span>
+    </button>
+    <PersonsContent setCurrentAkim={setCurrentAkim} />
+   </div>
+  </div>
+ );
+};
+
+export default InfoPanelBlock;

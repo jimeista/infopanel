@@ -23,7 +23,9 @@ const Transport = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block transport'>
+    <div className='InfoPanel_block transport' onClick={() => {
+      window.open('https://sc.smartalmaty.kz/main/monitoring-out', '_blank')
+    }}>
       <span className='InfoPanel_Title transportFlow'>
         Мониторинг выхода общественного транспорта по часам
       </span>

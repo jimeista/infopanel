@@ -56,7 +56,9 @@ const MBP = () => {
   }, [outcome])
 
   return (
-    <div className='InfoPanel_block mbp'>
+    <div className='InfoPanel_block mbp' onClick={() => {
+      window.open('https://sc.smartalmaty.kz/main/MBP', '_blank')
+    }}>
       <span className='InfoPanel_Title'>Мониторинг бюджетных программ</span>
       {!loading ? (
         <div className='InfoPanel_block_info'>
@@ -110,8 +112,14 @@ const MBP = () => {
             <div className={`MBP_style_block_card`}>
               <span>Расходы</span>
               <div className={`color_progress`}>
-                <span style={{ width: `${Math.round(outcome_percentage)}%` }}>
-                  Исполнение на текущий год
+                <span
+                  className={'mbp_percentage_income_wrap'}
+                  style={{ width: `${Math.round(outcome_percentage)}%` }}
+                >
+                  <span className={'mbp_percentage_income'}>
+                    {' '}
+                    Исполнение на текущий год{' '}
+                  </span>
                 </span>
               </div>
               <span>{`${Math.round(outcome_percentage)}%`}</span>

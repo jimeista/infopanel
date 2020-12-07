@@ -47,9 +47,11 @@ const Accidents = () => {
   }, [data])
 
   return (
-    <div className='InfoPanel_block dtp'>
+    <div className='InfoPanel_block dtp' onClick={() => {
+      window.open('https://sc.smartalmaty.kz/main/monitoring-road-accidents', '_blank')
+    }}>
       <div className={`InfoPanel_Title_wrap`}>
-        <span className='InfoPanel_Title'>Мониторинг дтп</span>
+        <span className='InfoPanel_Title'>Мониторинг ДТП</span>
         <div className={`header_block_crime`}>
           <div>
             <span>Всего нарушений</span>

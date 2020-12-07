@@ -22,7 +22,9 @@ const Emergency = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block ChS'>
+    <div className='InfoPanel_block ChS' onClick={() => {
+      window.open('https://sc.smartalmaty.kz/main/monitoring-emergency', '_blank')
+    }}>
       <span className='InfoPanel_Title'>Мониторинг чрезвычайных ситуаций</span>
       <div className={`chart_block`}>
         <div className='InfoPanel_block_info'>
