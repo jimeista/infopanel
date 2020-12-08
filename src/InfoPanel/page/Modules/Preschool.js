@@ -112,7 +112,9 @@ const firstPieData_bar = (data) => {
   Object.keys(data).forEach((key) => {
     let count = 0
     data[key].forEach((i) => {
-      count = count + i.capacity
+      if (i.status === 'Дефицит') {
+        count = count + i.capacity
+      }
     })
     storage.push(count)
   })

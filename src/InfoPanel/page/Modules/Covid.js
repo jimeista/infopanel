@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
+import moment from 'moment'
+
 import { Spinner } from '../Spinner'
 import { CovidOptions } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
-
-const start = '26.11.2020'
-const end = '03.12.2020'
 
 const Covid = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    axios
-      .get('https://covid19.smartalmaty.kz/api/snapshots/dailypatients')
-      .then((res) => console.log(res))
+  let start = moment().subtract(7, 'days').format('DD.MM.YYYY')
+  let end = moment().subtract(1, 'days').format('DD.MM.YYYY')
 
+  useEffect(() => {
     const fetch = async () => {
       await axios
         .get(
@@ -29,7 +27,7 @@ const Covid = () => {
     }
 
     fetch()
-  }, [])
+  }, [start, end])
 
   return (
     <div
@@ -91,19 +89,12 @@ const countTotal = (data, key) => {
   return count
 }
 
-let array_dates = [
-  '10.11.2020',
-  '11.11.2020',
-  '12.11.2020',
-  '13.11.2020',
-  '14.11.2020',
-  '15.11.2020',
-  '16.11.2020',
-]
-
 const CovidData = (data) => {
   return {
-    labels: array_dates,
+    labels: data.map((i) => {
+      let date_ = i.timestamp.split('-')
+      return `${date_[2].slice(0, 2)}.${date_[1]}.${date_[0].slice(2, 4)}`
+    }),
     datasets: [
       {
         label: 'Заразилось (чел.)',

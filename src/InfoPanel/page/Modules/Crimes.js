@@ -10,41 +10,37 @@ const Crimes = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
+  let start = moment().subtract(7, 'days').format('YYYY-MM-DD')
+  let end = moment().subtract(1, 'days').format('YYYY-MM-DD')
+
   useEffect(() => {
     setLoading(true)
     const fetch = async () => {
       let ob = {}
       await axios
         .post('/sc-public-safety/api/crimes', {
-          // start: '2020-10-30',
-          // end: moment().format('YYYY-MM-DD'),
+          start,
+          end,
         })
         .then((res) => {
           districts.forEach((d) => {
             ob = {
               ...ob,
-              [d]: res.data
-                .filter((i) => i['government-agency'].includes(d))
-                .sort((a, b) =>
-                  strcmp(
-                    b['initiation-date-pretty'],
-                    a['initiation-date-pretty']
-                  )
-                ),
+              [d]: res.data.filter((i) => i['government-agency'].includes(d)),
             }
           })
           setLoading(false)
         })
 
       let data_ = Object.keys(ob).map((key) => ({
-        value: key,
+        value: districtsRename(key),
         data: ob[key],
       }))
-      data_ = filterForSevenDaysData(data_)
+
       setData(data_)
     }
     fetch()
-  }, [])
+  }, [start, end])
 
   const total_crimes_ = useMemo(() => {
     let count = 0
@@ -70,15 +66,11 @@ const Crimes = () => {
         <div className={`header_block_crime`}>
           <div>
             <span>Всего преступлений</span>
-            <span>{`за период с ${
-              data[0]
-                ? data[0].data[data[0].data.length - 1][
-                    'initiation-date-pretty'
-                  ]
-                : ''
-            } по ${
-              data[0] ? data[0].data[0]['initiation-date-pretty'] : ''
-            }`}</span>
+            <span>{`за период с ${start.split('-')[2]}.${
+              start.split('-')[1]
+            }.${start.split('-')[0].slice(2, 4)} по ${end.split('-')[2]}.${
+              end.split('-')[1]
+            }.${end.split('-')[0].slice(2, 4)}`}</span>
           </div>
           <span>{total_crimes_}</span>
         </div>
@@ -91,7 +83,7 @@ const Crimes = () => {
           <InfoPanelChart
             typeChart={'HorizontalBar'}
             option={dtp_option}
-            dataSet={() => dtp_data(data)}
+            dataSet={dtp_data(data)}
           />
         )}
       </div>
@@ -127,31 +119,6 @@ export const dtp_data = (data) => {
   }
 }
 
-const filterForSevenDaysData = (data) => {
-  return data.map((i) => ({
-    value: districtsRename(i.value),
-    data: i.data.splice(0, inSevenDaysRangeIndex(i.data)),
-  }))
-}
-
-const inSevenDaysRangeIndex = (data) => {
-  let index = 0
-  let start_ = data[0]['initiation-date-pretty']
-  start_ = [start_.split('.')[2], start_.split('.')[1], start_.split('.')[0]]
-
-  for (let i = 1; i < data.length; i++) {
-    let end_ = data[i]['initiation-date-pretty']
-    end_ = [end_.split('.')[2], end_.split('.')[1], end_.split('.')[0]]
-
-    if (moment(start_).diff(moment(end_), 'days') > 7) {
-      index = i
-      break
-    }
-  }
-
-  return index
-}
-
 const districtsRename = (name) => {
   switch (name) {
     case 'Алмалинского':
@@ -173,16 +140,4 @@ const districtsRename = (name) => {
     default:
       return name
   }
-}
-
-export const strcmp = (a, b) => {
-  if (a === b) {
-    return 0
-  }
-
-  if (a > b) {
-    return 1
-  }
-
-  return -1
 }
