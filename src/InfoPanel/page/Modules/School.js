@@ -15,9 +15,8 @@ const School = () => {
     const fetch = async () => {
       let ob = {}
       await axios.get('/sc-edu-institutions/api/schools').then((res) => {
-        let res_ = res.data.filter((i) => i.fullness === 'Дефицит')
         districts.forEach((d) => {
-          let arr = res_.filter((i) => i.district === d)
+          let arr = res.data.filter((i) => i.district === d)
           ob = { ...ob, [d]: arr }
         })
       })
@@ -58,7 +57,7 @@ const School = () => {
           <InfoPanelChart
             typeChart={'Bar'}
             option={firstPieOption_bar}
-            dataSet={() => firstPieData_bar(data)}
+            dataSet={firstPieData_bar(data)}
           />
         ) : (
           <Spinner />
@@ -132,9 +131,10 @@ const firstPieData_bar = (data) => {
     labels: districts.map((i) => i.split(' ')[0]),
     datasets: [
       {
-        label: 'проектная мощность',
+        label: 'Проектная мощность',
         backgroundColor: '#4caf50',
         stack: 'Stack 0',
+        minBarLength: 12,
         data: storage,
       },
       {
@@ -142,6 +142,7 @@ const firstPieData_bar = (data) => {
         backgroundColor: '#f75b5b',
         stack: 'Stack 0',
         data: fullness,
+        minBarLength: 15,
       },
     ],
   }

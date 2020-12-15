@@ -112,9 +112,7 @@ const firstPieData_bar = (data) => {
   Object.keys(data).forEach((key) => {
     let count = 0
     data[key].forEach((i) => {
-      if (i.status === 'Дефицит') {
-        count = count + i.capacity
-      }
+      count = count + i.capacity
     })
     storage.push(count)
   })
@@ -122,9 +120,7 @@ const firstPieData_bar = (data) => {
   Object.keys(data).forEach((key) => {
     let count = 0
     data[key].forEach((i) => {
-      if (i.status === 'Дефицит') {
-        count = count + i['general-shortage']
-      }
+      count = count + i['general-shortage']
     })
     fullness.push(count)
   })
@@ -144,7 +140,7 @@ const firstPieData_bar = (data) => {
         backgroundColor: '#f75b5b',
         stack: 'Stack 0',
         data: fullness,
-        minBarLength: 17,
+        minBarLength: 15,
       },
     ],
   }

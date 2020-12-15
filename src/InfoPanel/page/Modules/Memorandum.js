@@ -61,7 +61,7 @@ const memorandum = [
   },
   {
     item: 3,
-    indicatorName: 'Рост объема не сырьевого экспорта',
+    indicatorName: 'Рост объема несырьевого экспорта',
     id: 8519,
   },
   {

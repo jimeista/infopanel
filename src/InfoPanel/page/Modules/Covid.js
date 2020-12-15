@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import axios from 'axios'
 
 import moment from 'moment'
@@ -10,15 +10,33 @@ import { InfoPanelChart } from '../InfoPanelChart'
 const Covid = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [end, setEnd] = useState()
 
-  let start = moment().subtract(7, 'days').format('DD.MM.YYYY')
-  let end = moment().subtract(1, 'days').format('DD.MM.YYYY')
+  useEffect(() => {
+    axios
+      .get(
+        `https://covid19.smartalmaty.kz/api/snapshots/dailypatients?start=01.10.2020&end=${moment().format(
+          'DD.MM.YYYY'
+        )}`
+      )
+      .then((res) => {
+        let stamp = moment(res.data[res.data.length - 1].timestamp).format(
+          'DD.MM.YYYY'
+        )
+        setEnd(stamp)
+      })
+  }, [])
 
   useEffect(() => {
     const fetch = async () => {
       await axios
         .get(
-          `https://covid19.smartalmaty.kz/api/snapshots/dailypatients?start=${start}&end=${end}`
+          `https://covid19.smartalmaty.kz/api/snapshots/dailypatients?start=${moment(
+            end,
+            'DD.MM.YYYY'
+          )
+            .subtract(7, 'days')
+            .format('DD.MM.YYYY')}&end=${end}`
         )
         .then((res) => {
           setData(res.data)
@@ -26,8 +44,19 @@ const Covid = () => {
         })
     }
 
-    fetch()
-  }, [start, end])
+    end && fetch()
+  }, [end])
+
+  const date_title = useMemo(() => {
+    let title = null
+    if (data.length > 0) {
+      title = `за период с ${moment(data[0].timestamp).format(
+        'DD.MM.YYYY'
+      )} по ${end}`
+    }
+
+    return title
+  }, [end, data])
 
   return (
     <div
@@ -39,9 +68,7 @@ const Covid = () => {
       <div className={`header_block`}>
         <div className={`InfoPanel_Title_wrap`}>
           <span className='InfoPanel_Title'>Динамика Covid-19</span>
-          <span className='InfoPanel_Title'>
-            {`за период с ${start} по ${end}`}
-          </span>
+          <span className='InfoPanel_Title'>{date_title}</span>
         </div>
         <div className={`card_header_wrap`}>
           <div className='card_header'>
