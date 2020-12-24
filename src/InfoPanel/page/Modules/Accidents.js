@@ -1,29 +1,40 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
-import moment from 'moment'
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
 
 import { dtp_option } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
 import { Spinner } from '../Spinner'
 
+const moment = extendMoment(Moment)
+let format = 'YYYY-MM-DD'
+
 const Accidents = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [start, setStart] = useState('')
+  const [end, setEnd] = useState('')
 
   useEffect(() => {
     setLoading(true)
     const fetch = async () => {
       let ob = {}
+      let arr = []
+
       await axios
         .post('/sc-public-safety/api/accidents', {
-          start: '2020-10-16',
-          end: '2020-10-23',
+          start: '2020-06-01',
         })
         .then((res) => {
+          let initialData = res.data[0]
+
+          arr = res.data.filter((i) => isInRange(initialData, i['date']))
+
           districts.forEach((d) => {
             ob = {
               ...ob,
-              [d]: res.data.filter((i) => {
+              [d]: arr.filter((i, index) => {
                 if (i['region'].includes(d)) {
                   return i
                 }
@@ -32,6 +43,11 @@ const Accidents = () => {
           })
           setLoading(false)
         })
+
+      setStart(
+        moment.unix(arr[arr.length - 1]['date'] / 1000).format('DD.MM.YYYY')
+      )
+      setEnd(moment.unix(arr[0]['date'] / 1000).format('DD.MM.YYYY'))
       setData(
         Object.keys(ob).map((key) => ({
           value: key,
@@ -51,6 +67,7 @@ const Accidents = () => {
     return count
   }, [data])
 
+  console.log(data)
   return (
     <div
       className='InfoPanel_block dtp'
@@ -66,7 +83,7 @@ const Accidents = () => {
         <div className={`header_block_crime`}>
           <div>
             <span>Всего нарушений</span>
-            <span>за период с 16.10.2020 по 23.10.2020</span>
+            <span>{`за период с ${start} по ${end}`}</span>
           </div>
           <span>{total_crimes_}</span>
         </div>
@@ -112,4 +129,20 @@ const dtp_data = (data) => {
       },
     ],
   }
+}
+
+const isInRange = (initialData, date_) => {
+  let date = initialData['date']
+  let end_ = moment.unix(date / 1000).format(format)
+  let start_ = moment(end_, format).subtract(7, 'days').format(format)
+
+  end_ = moment(end_, format).add(1, 'days').format(format)
+  const range = moment().range(start_, end_)
+
+  const isRange = range.contains(date_)
+
+  // date_ = moment.unix(date_ / 1000).format(format)
+  // console.log(date_, start_, end_, isRange)
+
+  return isRange
 }

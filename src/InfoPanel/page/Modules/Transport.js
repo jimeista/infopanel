@@ -105,3 +105,28 @@ export const transport_data = (data) => {
     ],
   }
 }
+
+// ;<div class='PublicTransport_out_body chart_Bar block_three '>
+//   <div class='PublicTransport_out_card_wrap'>
+//     <div class='PublicTransport_out_card date_block'>
+//       <span>Данные </span>
+//       <span>c 10.12.20 по 24.12.20</span>
+//     </div>
+//     <div class='PublicTransport_out_card'>
+//       <span>Компаний</span>
+//       <span>4</span>
+//     </div>
+//     <div class='PublicTransport_out_card'>
+//       <span>Транспортных едениц</span>
+//       <span>3006</span>
+//     </div>
+//     <div class='PublicTransport_out_card'>
+//       <span>Общий % выхода</span>
+//       <span>95.25%</span>
+//     </div>
+//     <div class='PublicTransport_out_card'>
+//       <span>Выход в учетные часы</span>
+//       <span>86.58 %</span>
+//     </div>
+//   </div>
+// </div>
