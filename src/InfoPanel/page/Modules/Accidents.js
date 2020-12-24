@@ -67,7 +67,6 @@ const Accidents = () => {
     return count
   }, [data])
 
-  console.log(data)
   return (
     <div
       className='InfoPanel_block dtp'

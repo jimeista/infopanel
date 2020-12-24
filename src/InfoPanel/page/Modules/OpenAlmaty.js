@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 
 import { Spinner } from '../Spinner'
 import { openAlmaty_option } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
+
+const format = 'YYYY-MM-DD'
+let start = moment().subtract(7, 'days').format(format)
+let end = moment().format(format)
 
 const OpenAlamty = () => {
   const [data, setData] = useState([])
@@ -15,10 +20,11 @@ const OpenAlamty = () => {
     const fetch = async () => {
       await axios
         .post('/sc-openalmaty/api/appeals', {
-          start: '2020-11-26',
-          end: '2020-12-03',
+          start,
+          end,
         })
         .then((res) => {
+          console.log(res)
           setData(res.data)
           setLoading(false)
         })
@@ -28,15 +34,20 @@ const OpenAlamty = () => {
   }, [])
 
   return (
-    <div className='InfoPanel_block openAlmaty' onClick={() => {
-      window.open('https://sc.smartalmaty.kz/main/openAlmaty', '_blank')
-    }}>
+    <div
+      className='InfoPanel_block openAlmaty'
+      onClick={() => {
+        window.open('https://sc.smartalmaty.kz/main/openAlmaty', '_blank')
+      }}
+    >
       <span className='InfoPanel_Title'>Мониторинг обращений Open Almaty</span>
       <div className='InfoPanel_block_info openAlmaty_wrap'>
         <div className={`openAlmaty_item`}>
           <div className={`openAlmaty_all`}>
             <span>Обращения</span>
-            <span>с 26.11.2020 по 03.12.2020</span>
+            <span>{`с ${moment(start).format('DD.MM.YYYY')} по ${moment(
+              end
+            ).format('DD.MM.YYYY')}`}</span>
             <span>{data.length}</span>
           </div>
           <div className={`openAlmaty_item_wrap`}>

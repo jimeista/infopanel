@@ -10,6 +10,7 @@ const Crimes = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
+  //in case sure db recieves data on each day
   let start = moment().subtract(7, 'days').format('YYYY-MM-DD')
   let end = moment().subtract(1, 'days').format('YYYY-MM-DD')
 
