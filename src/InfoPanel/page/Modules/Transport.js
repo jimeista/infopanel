@@ -3,44 +3,40 @@ import axios from 'axios'
 import moment from 'moment'
 
 import { Spinner } from '../Spinner'
-import { transport_option } from '../ChartOption'
-import { InfoPanelChart } from '../InfoPanelChart'
+// import { transport_option } from '../ChartOption'
+// import { InfoPanelChart } from '../InfoPanelChart'
 
 const Transport = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [end, setEnd] = useState()
+  const [start, setStart] = useState()
 
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
-      let date_ = moment().format('YYYY-MM-DD')
+      let start_ = ''
+      let end_ = ''
+      await axios.get(`/sc-public-transport/api/regularity`).then((res) => {
+        end_ = findLatesData(res.data)
+        start_ = moment(end_).subtract(7, 'days').format('YYYY-MM-DD')
+      })
+
       await axios
-        .get(`/sc-public-transport/api/regularity?start=${date_}&end=${date_}`)
+        .get(`/sc-public-transport/api/regularity?start=${start_}&end=${end_}`)
         .then((res) => {
-          if (res.data.length > 0) {
-            setEnd(date_)
-            setLoading(false)
-            setData(res.data)
-          } else {
-            date_ = moment().subtract(1, 'days').format('YYYY-MM-DD')
-            axios
-              .get(
-                `/sc-public-transport/api/regularity?start=${date_}&end=${date_}`
-              )
-              .then((res_) => {
-                // console.log(res)
-                setEnd(date_)
-                setLoading(false)
-                setData(res_.data)
-              })
-          }
+          setLoading(false)
+          setStart(moment(start_).format('DD.MM.YYYY'))
+          setEnd(moment(end_).format('DD.MM.YYYY'))
+          setData(res.data)
         })
     }
 
     fetch()
   }, [])
+
+  console.log(data)
 
   return (
     <div
@@ -69,9 +65,7 @@ const Transport = () => {
           <div className='PublicTransport_out_card_wrap'>
             <div className='PublicTransport_out_card date_block'>
               <span>Данные </span>
-              <span>{`за ${end.split('-')[2]}.${end.split('-')[1]}.${
-                end.split('-')[0]
-              }`}</span>
+              <span>{`c ${start} по ${end}`}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Компаний</span>
@@ -135,4 +129,21 @@ export const transport_data = (data) => {
       },
     ],
   }
+}
+
+const findLatesData = (data) => {
+  let date = moment().format('YYYY-MM-DD')
+  let diff
+
+  data.forEach((i) => {
+    let days = moment().diff(moment(i.date.slice(0, 10)), 'days')
+    if (diff && days < diff) {
+      diff = days
+      date = i.date
+    } else {
+      diff = days
+    }
+  })
+
+  return date.slice(0, 10)
 }

@@ -15,15 +15,15 @@ const MBP = () => {
     setLoading(true)
 
     const fetch = async () => {
-      let start = ''
-      let end = ''
+      let start_ = ''
+      let end_ = ''
       await axios.get('/sc-budget/api/budget-reports').then((res) => {
-        end = findLatesData(res.data)
-        start = moment(end).subtract(7, 'days').format('YYYY-MM-DD')
+        end_ = findLatesData(res.data)
+        start_ = moment(end_).subtract(7, 'days').format('YYYY-MM-DD')
       })
 
       await axios
-        .get(`/sc-budget/api/budget-reports?start=${start}&end=${end}`)
+        .get(`/sc-budget/api/budget-reports?start=${start_}&end=${end_}`)
         .then((res) => {
           let income_ = res.data.filter((i) =>
             i['budgeting-group-name'].toLowerCase().includes('доходы')
@@ -35,8 +35,8 @@ const MBP = () => {
           setIncome(income_)
           setOutcome(outcome_)
           setLoading(false)
-          setStart(start)
-          setEnd(end)
+          setStart(start_)
+          setEnd(end_)
         })
     }
 
