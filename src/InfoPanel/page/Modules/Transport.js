@@ -30,7 +30,7 @@ const Transport = () => {
                 `/sc-public-transport/api/regularity?start=${date_}&end=${date_}`
               )
               .then((res_) => {
-                console.log(res)
+                // console.log(res)
                 setEnd(date_)
                 setLoading(false)
                 setData(res_.data)

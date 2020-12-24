@@ -24,7 +24,6 @@ const OpenAlamty = () => {
           end,
         })
         .then((res) => {
-          console.log(res)
           setData(res.data)
           setLoading(false)
         })

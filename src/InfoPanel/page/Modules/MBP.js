@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
+import moment from 'moment'
 
 import { Spinner } from '../Spinner'
 
@@ -7,13 +8,22 @@ const MBP = () => {
   const [loading, setLoading] = useState([])
   const [income, setIncome] = useState([])
   const [outcome, setOutcome] = useState([])
+  const [start, setStart] = useState('')
+  const [end, setEnd] = useState('')
 
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
+      let start = ''
+      let end = ''
+      await axios.get('/sc-budget/api/budget-reports').then((res) => {
+        end = findLatesData(res.data)
+        start = moment(end).subtract(7, 'days').format('YYYY-MM-DD')
+      })
+
       await axios
-        .get('/sc-budget/api/budget-reports?start=2020-06-24&end=2020-07-01')
+        .get(`/sc-budget/api/budget-reports?start=${start}&end=${end}`)
         .then((res) => {
           let income_ = res.data.filter((i) =>
             i['budgeting-group-name'].toLowerCase().includes('доходы')
@@ -25,6 +35,8 @@ const MBP = () => {
           setIncome(income_)
           setOutcome(outcome_)
           setLoading(false)
+          setStart(start)
+          setEnd(end)
         })
     }
 
@@ -56,9 +68,12 @@ const MBP = () => {
   }, [outcome])
 
   return (
-    <div className='InfoPanel_block mbp' onClick={() => {
-      window.open('https://sc.smartalmaty.kz/main/MBP', '_blank')
-    }}>
+    <div
+      className='InfoPanel_block mbp'
+      onClick={() => {
+        window.open('https://sc.smartalmaty.kz/main/MBP', '_blank')
+      }}
+    >
       <span className='InfoPanel_Title'>Мониторинг бюджетных программ</span>
       {!loading ? (
         <div className='InfoPanel_block_info'>
@@ -68,7 +83,9 @@ const MBP = () => {
                 <div className='MBP_card_title'>
                   <span>Расходы</span>
                   <span className='MBP_card_date'>
-                    c 24.06.2020 <br /> по 01.07.2020{' '}
+                    {`c ${moment(start).format('DD.MM.YYYY')} `}
+                    <br />
+                    {`по ${moment(end).format('DD.MM.YYYY')}`}
                   </span>
                 </div>
               </div>
@@ -158,4 +175,21 @@ const getTotal = (data, key) => {
   })
 
   return Math.round(count)
+}
+
+const findLatesData = (data) => {
+  let date = moment().format('YYYY-MM-DD')
+  let diff
+
+  data.forEach((i) => {
+    let days = moment().diff(moment(i.date), 'days')
+    if (diff && days < diff) {
+      diff = days
+      date = i.date
+    } else {
+      diff = days
+    }
+  })
+
+  return date
 }
