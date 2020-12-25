@@ -3,40 +3,30 @@ import axios from 'axios'
 import moment from 'moment'
 
 import { Spinner } from '../Spinner'
-// import { transport_option } from '../ChartOption'
-// import { InfoPanelChart } from '../InfoPanelChart'
 
 const Transport = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const [end, setEnd] = useState()
-  const [start, setStart] = useState()
 
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
-      let start_ = ''
-      let end_ = ''
-      await axios.get(`/sc-public-transport/api/regularity`).then((res) => {
-        end_ = findLatesData(res.data)
-        start_ = moment(end_).subtract(7, 'days').format('YYYY-MM-DD')
-      })
-
       await axios
-        .get(`/sc-public-transport/api/regularity?start=${start_}&end=${end_}`)
+        .get(
+          `/sc-public-transport/api/regularity?start=${moment()
+            .subtract(14, 'days')
+            .format('YYYY-MM-DD')}&end=${moment().format('YYYY-MM-DD')}`
+        )
         .then((res) => {
+          console.log(res)
           setLoading(false)
-          setStart(moment(start_).format('DD.MM.YYYY'))
-          setEnd(moment(end_).format('DD.MM.YYYY'))
           setData(res.data)
         })
     }
 
     fetch()
   }, [])
-
-  console.log(data)
 
   return (
     <div
@@ -48,40 +38,32 @@ const Transport = () => {
       <span className='InfoPanel_Title transportFlow'>
         Мониторинг выхода общественного транспорта по часам
       </span>
-      {/* <span className='InfoPanel_Title'>{`Данные за ${end}`}</span> */}
-      {/* <div className='InfoPanel_block_info'>
-        {!loading ? (
-          <InfoPanelChart
-            typeChart={'HorizontalBar'}
-            option={transport_option}
-            dataSet={transport_data(data)}
-          />
-        ) : (
-          <Spinner />
-        )}
-      </div> */}
       <div className='PublicTransport_out_body chart_Bar block_three '>
         {!loading ? (
           <div className='PublicTransport_out_card_wrap'>
             <div className='PublicTransport_out_card date_block'>
               <span>Данные </span>
-              <span>{`c ${start} по ${end}`}</span>
+              <span>{`c ${moment()
+                .subtract(14, 'days')
+                .format('DD.MM.YYYY')} по ${moment().format(
+                'DD.MM.YYYY'
+              )}`}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Компаний</span>
-              <span>4</span>
+              <span>{getTotalCompanies(data)}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Транспортных едениц</span>
-              <span>3006</span>
+              <span>{data.length > 0 && getTotalBusCount(data)}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Общий % выхода</span>
-              <span>95.25%</span>
+              <span>{`${data.length > 0 && getTotalPercentage(data)}%`}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Выход в учетные часы</span>
-              <span>86.58 %</span>
+              <span>{`${data.length > 0 && getTotalTimeExit(data)} %`}</span>
             </div>
           </div>
         ) : (
@@ -94,56 +76,62 @@ const Transport = () => {
 
 export default React.memo(Transport)
 
-/*выход транспорта*/
-export const transport_data = (data) => {
-  let time = {}
+const getTotalCompanies = (data) => {
+  let ob = {}
 
   data.forEach((i) => {
-    if (time[i.time]) {
-      time = {
-        ...time,
-        [i.time]: {
-          plan: i.plan + time[i.time].plan,
-          fact: i.fact + time[i.time].fact,
-        },
-      }
-    } else {
-      time = { ...time, [i.time]: { plan: i.plan, fact: i.fact } }
+    ob = {
+      ...ob,
+      [i.company]: i.company,
     }
   })
 
-  return {
-    labels: Object.keys(time),
-    datasets: [
-      {
-        label: 'План ',
-        backgroundColor: '#7ed321',
-        data: Object.values(time).map((i) => i.plan),
-        /*fontSize: '22'*/
-      },
-      {
-        label: 'Факт',
-        backgroundColor: '#4cbea9',
-        data: Object.values(time).map((i) => i.fact),
-        /*fontSize: '22'*/
-      },
-    ],
-  }
+  return Object.values(ob).length
 }
 
-const findLatesData = (data) => {
-  let date = moment().format('YYYY-MM-DD')
-  let diff
+const getTotalBusCount = (data) => {
+  let sum = 0
 
   data.forEach((i) => {
-    let days = moment().diff(moment(i.date.slice(0, 10)), 'days')
-    if (diff && days < diff) {
-      diff = days
-      date = i.date
-    } else {
-      diff = days
+    sum += i.fact
+  })
+
+  return sum
+}
+
+const getTotalPercentage = (data) => {
+  let ob = data.reduce((prev, i) => {
+    return {
+      plan: prev.plan + i.plan,
+      fact: prev.fact + i.fact,
     }
   })
 
-  return date.slice(0, 10)
+  return ((ob.fact / ob.plan) * 100).toFixed(2)
+}
+
+const getTotalTimeExit = (data) => {
+  let timegroup = {}
+  data.forEach((i) => {
+    timegroup = {
+      ...timegroup,
+      [i.time]: {
+        plan: timegroup[`${i.time}`]
+          ? [i.plan, ...timegroup[`${i.time}`].plan]
+          : [i.plan],
+        fact: timegroup[`${i.time}`]
+          ? [i.fact, ...timegroup[`${i.time}`].fact]
+          : [i.fact],
+      },
+    }
+  })
+
+  return (
+    Object.values(timegroup).reduce((prev, i) => {
+      let plan = i.plan.reduce((sum, num) => sum + num)
+      let fact = i.fact.reduce((sum, num) => sum + num)
+
+      return plan === 0 ? prev : (fact / plan) * 100
+    }, 0) / Object.keys(timegroup).length
+  ).toFixed(2)
 }

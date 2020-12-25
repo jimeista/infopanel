@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import UserInfo from './UserInfo'
-import photo1 from './faces/ea825f48a30b953a396a29a54752ff68.png'
+// import UserInfo from './UserInfo'
+// import photo1 from './faces/ea825f48a30b953a396a29a54752ff68.png'
 import axios from 'axios'
 
 const PersonsContent = (props) => {
@@ -44,11 +44,13 @@ const PersonsContent = (props) => {
               </div>
 
               <div>
-                {value['supervised-organisations'].map((el) => (
-                  <span key={el.abbreviation}>
-                    {el.abbreviation ? el.abbreviation : 'Аким города'}
-                  </span>
-                ))}
+                {value['supervised-organisations'].map((el, index) => {
+                  return index === 0 ? null : (
+                    <span key={`${el.abbreviation}-${index}`}>
+                      {el.abbreviation}
+                    </span>
+                  )
+                })}
               </div>
             </div>
           </div>
