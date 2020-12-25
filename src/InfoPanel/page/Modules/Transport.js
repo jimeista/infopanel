@@ -12,17 +12,13 @@ const Transport = () => {
     setLoading(true)
 
     const fetch = async () => {
-      await axios
-        .get(
-          `/sc-public-transport/api/regularity?start=${moment()
-            .subtract(14, 'days')
-            .format('YYYY-MM-DD')}&end=${moment().format('YYYY-MM-DD')}`
-        )
-        .then((res) => {
-          console.log(res)
-          setLoading(false)
-          setData(res.data)
-        })
+      // let url =`/sc-public-transport/api/regularity?start=${moment()
+      //   .subtract(14, 'days')
+      //   .format('YYYY-MM-DD')}&end=${moment().format('YYYY-MM-DD')}`
+      await axios.get('/sc-public-transport/api/regularity').then((res) => {
+        setLoading(false)
+        setData(res.data)
+      })
     }
 
     fetch()
@@ -128,10 +124,10 @@ const getTotalTimeExit = (data) => {
 
   return (
     Object.values(timegroup).reduce((prev, i) => {
-      let plan = i.plan.reduce((sum, num) => sum + num)
-      let fact = i.fact.reduce((sum, num) => sum + num)
+      let plan = i.plan.reduce((sum, num) => sum + num, 0)
+      let fact = i.fact.reduce((sum, num) => sum + num, 0)
 
-      return plan === 0 ? prev : (fact / plan) * 100
+      return plan === 0 ? prev : prev + (fact / plan) * 100
     }, 0) / Object.keys(timegroup).length
   ).toFixed(2)
 }
