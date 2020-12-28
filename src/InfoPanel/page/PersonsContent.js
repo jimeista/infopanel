@@ -44,12 +44,8 @@ const PersonsContent = (props) => {
               </div>
 
               <div>
-                {value['supervised-organisations'].map((el, index) => {
-                  return index === 0 ? null : (
-                    <span key={`${el.abbreviation}-${index}`}>
-                      {el.abbreviation}
-                    </span>
-                  )
+                {value['supervised-organisations'].map((el) => {
+                  return index === 0 ? null : <span>{el.abbreviation}</span>
                 })}
               </div>
             </div>
