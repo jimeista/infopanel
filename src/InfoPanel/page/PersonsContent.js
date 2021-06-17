@@ -4,26 +4,23 @@ import React, { useEffect, useState } from 'react'
 // import photo1 from './faces/ea825f48a30b953a396a29a54752ff68.png'
 import axios from 'axios'
 
-const PersonsContent = (props) => {
+// боковая навигаци по должностям
+const PersonsContent = ({ setCurrentAkim, config }) => {
   const [users, setUsers] = useState([])
 
+  // инициализация пользователей
   useEffect(() => {
     const fetch = async () => {
-      let ob = {}
-      const hash = localStorage.getItem('userhash')
+      // const hash = localStorage.getItem('userhash')
       await axios
-        .get('/sc-api-gateway/acl/supervisors', {
-          headers: {
-            Authorization: `Basic ${hash}`,
-          },
-        })
+        .get('/sc-api-gateway/acl/supervisors', { config })
         .then((res) => {
           // console.log(res.data)
           setUsers(res.data)
         })
     }
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   return (
     <div className='Home_navigation_page_content_persons_profiles'>
@@ -33,19 +30,24 @@ const PersonsContent = (props) => {
             key={index}
             className={`card_block_unit_wrap`}
             onClick={() => {
-              props.setCurrentAkim(index + 1)
+              setCurrentAkim(index + 1)
             }}
           >
             <div className={`card_block_unit`}>
               {/*<div>{value.img}</div>*/}
               <div>{value.name}</div>
               <div className={`card_block_unit_img`}>
-                <img src={value['image-path']} alt='' />
+                <img
+                  src={`https://sc.smartalmaty.kz/sc-api-gateway${value['image-path']}`}
+                  alt=''
+                />
               </div>
 
               <div>
                 {value['supervised-organisations'].map((el) => {
-                  return index === 0 ? null : <span>{el.abbreviation}</span>
+                  return index === 0 ? null : (
+                    <span key={el.abbreviation}>{el.abbreviation}</span>
+                  )
                 })}
               </div>
             </div>

@@ -5,21 +5,28 @@ import { Spinner } from '../Spinner'
 import { InfoPanelChart } from '../InfoPanelChart'
 import { ChS_option } from '../ChartOption'
 
-const Emergency = () => {
+// ЧС
+const Emergency = ({ config }) => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // состояние спиннера
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
     const fetch = async () => {
-      await axios.get('/sc-dispatching-services/api/chs').then((res) => {
-        setData(res.data.slice(res.data.length - 7, res.data.length))
-        setLoading(false)
-      })
+      await axios
+        .get(
+          '/sc-api-gateway/secured/_/sc-dispatching-services/api/chs',
+          config
+        )
+        .then((res) => {
+          setData(res.data.slice(res.data.length - 7, res.data.length))
+          setLoading(false)
+        })
     }
 
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   return (
     <div
@@ -103,7 +110,7 @@ const Emergency = () => {
 
 export default React.memo(Emergency)
 
-//chart data
+/*Преобразование данных под структуру chartjs*/
 const getEmergencyChartData = (data) => {
   let labels = data.map(
     (i) =>
@@ -142,7 +149,7 @@ const getEmergencyChartData = (data) => {
   return { labels, datasets }
 }
 
-//helper to count total number of key values
+// вспомогательная функция подсчета по ключам
 const getTotalCount = (data, key) => {
   let count = 0
 

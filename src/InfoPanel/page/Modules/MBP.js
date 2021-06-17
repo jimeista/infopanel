@@ -4,26 +4,31 @@ import moment from 'moment'
 
 import { Spinner } from '../Spinner'
 
-const MBP = () => {
-  const [loading, setLoading] = useState([])
+const MBP = ({ config }) => {
+  const [loading, setLoading] = useState([]) // состояние спиннера
   const [income, setIncome] = useState([])
   const [outcome, setOutcome] = useState([])
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
       let start_ = ''
       let end_ = ''
-      await axios.get('/sc-budget/api/budget-reports').then((res) => {
+      let url = '/sc-api-gateway/secured/_/sc-budget/api/budget-reports'
+      await axios.get('/sc-budget/api/budget-reports', config).then((res) => {
         end_ = findLatesData(res.data)
         start_ = moment(end_).subtract(7, 'days').format('YYYY-MM-DD')
-      })
+      }, config)
 
       await axios
-        .get(`/sc-budget/api/budget-reports?start=${start_}&end=${end_}`)
+        .get(
+          `/sc-budget/api/budget-reports?start=${start_}&end=${end_}`,
+          config
+        )
         .then((res) => {
           let income_ = res.data.filter((i) =>
             i['budgeting-group-name'].toLowerCase().includes('доходы')
@@ -40,9 +45,10 @@ const MBP = () => {
         })
     }
 
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
+  // подсчет статистики
   const income_plan_total = useMemo(() => {
     return getTotal(income, 'plan')
   }, [income])
@@ -167,6 +173,7 @@ const MBP = () => {
 
 export default React.memo(MBP)
 
+// вспомогательная функция подсчета по ключам
 const getTotal = (data, key) => {
   let count = 0
 
@@ -177,13 +184,14 @@ const getTotal = (data, key) => {
   return Math.round(count)
 }
 
+// вычесление актуальной даты в запросе
 const findLatesData = (data) => {
   let date = moment().format('YYYY-MM-DD')
   let diff
 
   data.forEach((i) => {
     let days = moment().diff(moment(i.date), 'days')
-    if (diff && days < diff) {
+    if (diff && days <= diff) {
       diff = days
       date = i.date
     } else {

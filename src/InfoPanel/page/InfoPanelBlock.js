@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import 'chartjs-plugin-piechart-outlabels'
 
 import Emergency from './Modules/Emergency'
@@ -14,7 +13,7 @@ import Covid from './Modules/Covid'
 import Memorandum from './Modules/Memorandum'
 import PersonsContent from './PersonsContent'
 
-const InfoPanelBlock = () => {
+const InfoPanelBlock = ({ config }) => {
   const toogleRightSide = () => {
     document
       .querySelector('.Home_navigation_page_right_side')
@@ -23,7 +22,6 @@ const InfoPanelBlock = () => {
   const [currentAkim, setCurrentAkim] = useState(1)
   const handleDragShowHide = (event) => {
     if (event.clientY === 0) {
-      return
     }
   }
 
@@ -34,16 +32,16 @@ const InfoPanelBlock = () => {
           <span className='InfoPanel_title main'>Информационная панель</span>
         </div>
         <div className={`InfoPanel_wrap user_${currentAkim}`}>
-          <Memorandum />
-          <School />
-          <Preschool />
+          <Memorandum config={config} />
+          <School config={config} />
+          <Preschool config={config} />
           <Covid />
-          <Crimes />
-          <Accidents />
-          <Emergency />
-          <Transport />
-          <OpenAlmaty />
-          <MBP />
+          <Crimes config={config} />
+          <Accidents config={config} />
+          <Emergency config={config} />
+          <Transport config={config} />
+          <OpenAlmaty config={config} />
+          <MBP config={config} />
         </div>
       </div>
       <div className='Home_navigation_page_right_side'>
@@ -55,7 +53,7 @@ const InfoPanelBlock = () => {
         >
           <span>Руководство города</span>
         </button>
-        <PersonsContent setCurrentAkim={setCurrentAkim} />
+        <PersonsContent setCurrentAkim={setCurrentAkim} config={config} />
       </div>
     </div>
   )

@@ -6,23 +6,29 @@ import { dtp_option } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
 import { Spinner } from '../Spinner'
 
-const Crimes = () => {
+// Преступления
+const Crimes = ({ config }) => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // состояние спиннера
 
-  //in case sure db recieves data on each day
+  //промежуток даты
   let start = moment().subtract(7, 'days').format('YYYY-MM-DD')
   let end = moment().subtract(1, 'days').format('YYYY-MM-DD')
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
     const fetch = async () => {
       let ob = {}
       await axios
-        .post('/sc-public-safety/api/crimes', {
-          start,
-          end,
-        })
+        .post(
+          '/sc-api-gateway/secured/_/sc-public-safety/api/crimes',
+          {
+            start,
+            end,
+          },
+          config
+        )
         .then((res) => {
           districts.forEach((d) => {
             ob = {
@@ -40,9 +46,10 @@ const Crimes = () => {
 
       setData(data_)
     }
-    fetch()
-  }, [start, end])
+    if (config) fetch()
+  }, [start, end, config])
 
+  // блок информации по преступлении
   const total_crimes_ = useMemo(() => {
     let count = 0
     data.forEach((i) => {
@@ -64,6 +71,7 @@ const Crimes = () => {
     >
       <div className={`InfoPanel_Title_wrap`}>
         <span className='InfoPanel_Title'>Мониторинг преступности</span>
+        {/* блок даты */}
         <div className={`header_block_crime`}>
           <div>
             <span>Всего преступлений</span>
@@ -94,6 +102,7 @@ const Crimes = () => {
 
 export default Crimes
 
+// дефолтные опции районов
 const districts = [
   'Алмалинского',
   'Алатауского',
@@ -105,7 +114,7 @@ const districts = [
   'Турксибского',
 ]
 
-/*Преступления и дтп*/
+/*Преобразование данных под структуру chartjs*/
 export const dtp_data = (data) => {
   return {
     labels: data.map((i) => i.value),
@@ -120,6 +129,7 @@ export const dtp_data = (data) => {
   }
 }
 
+// вспомогательная функция для поиска данных в объекте запроса
 const districtsRename = (name) => {
   switch (name) {
     case 'Алмалинского':

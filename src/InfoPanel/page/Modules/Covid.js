@@ -1,17 +1,18 @@
 import React, { useMemo, useEffect, useState } from 'react'
 import axios from 'axios'
-
 import moment from 'moment'
 
 import { Spinner } from '../Spinner'
 import { CovidOptions } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
 
+// Ковид
 const Covid = () => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false) // состояние спиннера
   const [end, setEnd] = useState()
 
+  // стартовая инициализация данных
   useEffect(() => {
     axios
       .get(
@@ -27,6 +28,7 @@ const Covid = () => {
       })
   }, [])
 
+  // инициализация актуальных данных за семь дней
   useEffect(() => {
     const fetch = async () => {
       await axios
@@ -47,6 +49,7 @@ const Covid = () => {
     end && fetch()
   }, [end])
 
+  // блок промежутка даты
   const date_title = useMemo(() => {
     let title = null
     if (data.length > 0) {
@@ -70,6 +73,7 @@ const Covid = () => {
           <span className='InfoPanel_Title'>Динамика Covid-19</span>
           <span className='InfoPanel_Title'>{date_title}</span>
         </div>
+        {/* статистика */}
         <div className={`card_header_wrap`}>
           <div className='card_header'>
             <span>Всего симптомных</span>
@@ -89,6 +93,7 @@ const Covid = () => {
           </div>
         </div>
       </div>
+      {/* график */}
       <div className='InfoPanel_block_info'>
         {!loading ? (
           <InfoPanelChart
@@ -106,6 +111,7 @@ const Covid = () => {
 
 export default React.memo(Covid)
 
+// вспомогательная функция вычесления общего количества ключа запроса
 const countTotal = (data, key) => {
   let count = 0
 
@@ -116,6 +122,7 @@ const countTotal = (data, key) => {
   return count
 }
 
+//подгонка структуры данных на chartjs
 const CovidData = (data) => {
   return {
     labels: data.map((i) => {

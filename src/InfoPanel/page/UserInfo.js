@@ -1,22 +1,15 @@
-import React from "react";
-
-
+import React from 'react'
 
 const UserInfo = ({ name, position, img }) => {
   return (
+    <div>
+      <img src={img} alt={name} />
 
+      <p>{name}</p>
 
-      <div><img src={img} alt={name}/>
+      <p>{position}</p>
+    </div>
+  )
+}
 
-
-          <p>{name}</p>
-
-
-          <p>{position}</p>
-      </div>
-
-
-  );
-};
-
-export default UserInfo;
+export default UserInfo

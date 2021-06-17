@@ -1,8 +1,22 @@
+@font-face {
+  font-family: 'Century_Gothic';
+  src: local('Century_Gothic'),
+    url(./font/Century_Gothic.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Century_Gothic_Bold';
+  src: local('Century_Gothic_Bold'),
+    url(./font/Century_Gothic_Bold.ttf) format('truetype');
+}
+
 .App {
   text-align: center;
+  font-family: 'Century_Gothic_Bold', sans-serif;
 }
 body {
   background: inherit;
+  /* background: #282c34; */
 }
 .App-logo {
   height: 40vmin;
@@ -49,7 +63,7 @@ body {
 
   letter-spacing: 0.5px;
 
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Century_Gothic', Arial, sans-serif;
   font-size: 14px;
 
   color: #ffffff;

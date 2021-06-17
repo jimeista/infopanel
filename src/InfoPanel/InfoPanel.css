@@ -3,31 +3,33 @@
   height: 100%;
   margin-bottom: 5px;
   user-select: none;
+  font-family: 'Century_Gothic', sans-serif;
 }
 .InfoPanel_title.main {
-  margin: 0 0 10px 0;
-  font-size: clamp(16px, 4vw, 28px);
+  font-size: clamp(16px, 3vw, 28px);
 }
 .InfoPanel_title {
-  font-size: clamp(12px, 5vw, 18px);
+  font-size: clamp(12px, 2vw, 18px);
   align-self: flex-start;
   color: white;
-  height: 35px;
+  height: max-content;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
-  padding-bottom: 5px;
   display: flex;
   font-weight: 600;
 }
 .InfoPanel_block_card > span:first-child,
 .header_block_crime > div:first-child > span:first-child,
 .InfoPanel_Title {
-  font-size: clamp(12px, 5vw, 18px);
+  font-size: clamp(12px, 2vw, 18px);
   color: white;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   height: max-content;
-  padding-bottom: 5px;
+  /* padding-bottom: 5px;*/
   display: flex;
   font-weight: 600;
+}
+.InfoPanel_Title {
+  padding-bottom: 5px;
 }
 .InfoPanel_main {
   width: 100%;
@@ -96,8 +98,11 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
+  overflow-x: scroll;
 }
-
+.InfoPanel_block_info .ant-table-wrapper {
+  min-width: 500px;
+}
 .InfoPanel_block_info canvas {
   display: flex;
   align-items: center;
@@ -198,7 +203,7 @@
 }
 
 .openAlmaty_all > span:nth-child(1) {
-  font-size: 36px;
+  font-size: clamp(14px, 3vw, 28px);
   color: white;
 }
 
@@ -208,15 +213,15 @@
 }
 
 .openAlmaty_all > span:nth-child(3) {
-  font-size: 36px;
+  font-size: clamp(14px, 3vw, 28px);
   color: rgb(144, 238, 144);
 }
 .openAlmaty_item:first-child > span:nth-child(2) {
-  font-size: 36px;
+  font-size: clamp(14px, 3vw, 28px);
   color: rgb(236, 161, 94);
 }
 .openAlmaty_item:last-child > span:nth-child(2) {
-  font-size: 36px;
+  font-size: clamp(14px, 3vw, 28px);
   color: rgb(144, 238, 144);
 }
 .openAlmaty_item_wrap {
@@ -240,7 +245,7 @@
   justify-content: center;
 }
 .openAlmaty_item > span:first-child {
-  font-size: 22px;
+  font-size: clamp(14px, 3vw, 22px);
   color: white;
 }
 
@@ -279,7 +284,7 @@
   flex-direction: column;
 }
 .MBP_card_title > span:first-child {
-  font-size: 32px;
+  font-size: clamp(16px, 3vw, 32px);
   color: #fff;
   text-decoration: underline;
 }
@@ -355,23 +360,28 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 5px;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   border: 1px solid #ffffff80;
   border-radius: 2px;
   background: #566780;
+  height: 100%;
+  text-align: center;
+}
+.InfoPanel_block_card > span {
+  padding: 0 5px;
 }
 /*.InfoPanel_block_card > span:first-child {
  font-size: clamp(14px, 1.5vw, 22px);
  color: white;
 }*/
 .InfoPanel_block_card:first-child > span:last-child {
-  font-size: clamp(12px, 5vw, 22px);
+  font-size: clamp(12px, 3vw, 22px);
   color: lightgreen;
   font-weight: 600;
 }
 .InfoPanel_block_card:last-child > span:last-child {
-  font-size: clamp(12px, 5vw, 22px);
+  font-size: clamp(12px, 3vw, 22px);
   color: lightcoral;
   font-weight: 600;
 }
@@ -464,7 +474,7 @@
 }
 .first_chart_block_info > span {
   font-weight: 600;
-  font-size: 18px;
+  font-size: clamp(12px, 3vw, 16px);
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
   color: white;
   padding-left: 5px;
@@ -862,10 +872,10 @@
   width: 100%;
 }
 .PublicTransport_out_card > span:first-child {
-  font-size: clamp(14px, 3vw, 22px);
+  font-size: clamp(14px, 2vw, 22px);
 }
 .PublicTransport_out_card > span:last-child {
-  font-size: clamp(16px, 3vw, 32px);
+  font-size: clamp(16px, 3vw, 26px);
 }
 @media (max-width: 1100px) {
   .InfoPanel_wrap {
@@ -885,5 +895,34 @@
     min-height: 400px;
     margin-bottom: 5px;
     height: auto;
+  }
+}
+@media (max-width: 700px) {
+  .card_header_wrap {
+    grid-template-columns: 50% 50%;
+  }
+  .card_header span {
+    text-align: center;
+  }
+  .MBP_card_title {
+    flex-direction: row;
+    height: auto;
+  }
+  .MBP_card_date {
+    height: auto;
+  }
+  .MBP_cardBlock > div {
+    width: 100%;
+  }
+  .MBP_card,
+  .MBP_card_wrap {
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content;
+  }
+  .InfoPanel_block.mbp {
+    min-height: max-content;
+  }
+  .MBP_card_block > span:nth-child(2) {
+    padding-bottom: 10px;
   }
 }

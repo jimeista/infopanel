@@ -1,6 +1,8 @@
 import { compactInteger } from '../../common/FormaterNum'
 import 'chartjs-plugin-datalabels'
 
+// Alex's masterpiece
+
 let data = [
   '10000',
   '12300',
@@ -459,8 +461,7 @@ export const lineOptionOne = {
     datalabels: {
       display: false,
       formatter: function (value, ctx, index) {
-        console.log('7777777777777777', shortName[ctx.dataIndex])
-        console.table('1111111111111111111111', ctx)
+
         /*     return compactInteger(value);*/
 
         return shortName[ctx.dataIndex] + value /*+ cvvt_b[ctx.dataIndex]*/

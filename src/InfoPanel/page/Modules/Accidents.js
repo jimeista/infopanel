@@ -10,12 +10,15 @@ import { Spinner } from '../Spinner'
 const moment = extendMoment(Moment)
 let format = 'YYYY-MM-DD'
 
-const Accidents = () => {
+// ДТП
+const Accidents = ({ config }) => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // состояние спиннера
+
   const [start, setStart] = useState('')
   const [end, setEnd] = useState('')
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
     const fetch = async () => {
@@ -23,14 +26,20 @@ const Accidents = () => {
       let arr = []
 
       await axios
-        .post('/sc-public-safety/api/accidents', {
-          start: '2020-06-01',
-        })
+        .post(
+          '/sc-api-gateway/secured/_/sc-public-safety/api/accidents',
+          {
+            start: '2020-06-01',
+          },
+          config
+        )
         .then((res) => {
           let initialData = res.data[0]
 
+          // фильтруем актуальные данные за 7 дней
           arr = res.data.filter((i) => isInRange(initialData, i['date']))
 
+          // группируем данные по районам
           districts.forEach((d) => {
             ob = {
               ...ob,
@@ -55,8 +64,8 @@ const Accidents = () => {
         }))
       )
     }
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   const total_crimes_ = useMemo(() => {
     let count = 0
@@ -79,6 +88,7 @@ const Accidents = () => {
     >
       <div className={`InfoPanel_Title_wrap`}>
         <span className='InfoPanel_Title'>Мониторинг ДТП</span>
+        {/* блок промежутка даты */}
         <div className={`header_block_crime`}>
           <div>
             <span>Всего нарушений</span>
@@ -87,6 +97,7 @@ const Accidents = () => {
           <span>{total_crimes_}</span>
         </div>
       </div>
+      {/* график */}
       <div className='InfoPanel_block_info'>
         {!loading ? (
           <InfoPanelChart
@@ -104,6 +115,7 @@ const Accidents = () => {
 
 export default Accidents
 
+// дефолтные опции районов
 const districts = [
   'Алмалинский',
   'Алатауский',
@@ -115,7 +127,7 @@ const districts = [
   'Турксибский',
 ]
 
-/*Преступления и дтп*/
+/*Преобразование данных под структуру chartjs*/
 const dtp_data = (data) => {
   return {
     labels: data.map((i) => i.value),
@@ -130,6 +142,7 @@ const dtp_data = (data) => {
   }
 }
 
+// вспомогательная функция для фильтра данных за последние семь дней
 const isInRange = (initialData, date_) => {
   let date = initialData['date']
   let end_ = moment.unix(date / 1000).format(format)

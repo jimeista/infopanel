@@ -4,25 +4,25 @@ import moment from 'moment'
 
 import { Spinner } from '../Spinner'
 
-const Transport = () => {
+const Transport = ({ config }) => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // состояние спиннера
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
-      // let url =`/sc-public-transport/api/regularity?start=${moment()
-      //   .subtract(14, 'days')
-      //   .format('YYYY-MM-DD')}&end=${moment().format('YYYY-MM-DD')}`
+      // let url = '/sc-api-gateway/secured/_/sc-public-transport/api/regularity'
+
       await axios.get('/sc-public-transport/api/regularity').then((res) => {
         setLoading(false)
         setData(res.data)
       })
     }
 
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   return (
     <div
@@ -34,6 +34,7 @@ const Transport = () => {
       <span className='InfoPanel_Title transportFlow'>
         Мониторинг выхода общественного транспорта по часам
       </span>
+      {/* статистика */}
       <div className='PublicTransport_out_body chart_Bar block_three '>
         {!loading ? (
           <div className='PublicTransport_out_card_wrap'>
@@ -47,19 +48,23 @@ const Transport = () => {
             </div>
             <div className='PublicTransport_out_card'>
               <span>Компаний</span>
-              <span>{getTotalCompanies(data)}</span>
+              <span>{data.length > 0 ? getTotalCompanies(data) : ''}</span>
             </div>
             <div className='PublicTransport_out_card'>
-              <span>Транспортных едениц</span>
-              <span>{data.length > 0 && getTotalBusCount(data)}</span>
+              <span>Транспортных единиц</span>
+              <span>{data.length > 0 ? getTotalBusCount(data) : ''}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Общий % выхода</span>
-              <span>{`${data.length > 0 && getTotalPercentage(data)}%`}</span>
+              <span>{`${
+                data.length > 0 ? getTotalPercentage(data) : ''
+              }%`}</span>
             </div>
             <div className='PublicTransport_out_card'>
               <span>Выход в учетные часы</span>
-              <span>{`${data.length > 0 && getTotalTimeExit(data)} %`}</span>
+              <span>{`${
+                data.length > 0 ? getTotalTimeExit(data) : ''
+              } %`}</span>
             </div>
           </div>
         ) : (
@@ -72,6 +77,7 @@ const Transport = () => {
 
 export default React.memo(Transport)
 
+// вспомогательная функция подсчета количества компании
 const getTotalCompanies = (data) => {
   let ob = {}
 
@@ -85,6 +91,7 @@ const getTotalCompanies = (data) => {
   return Object.values(ob).length
 }
 
+// вспомогательная функция подсчета количества транспортных ед
 const getTotalBusCount = (data) => {
   let sum = 0
 
@@ -95,6 +102,7 @@ const getTotalBusCount = (data) => {
   return sum
 }
 
+// вспомогательная функция подсчета количества общего % выхода
 const getTotalPercentage = (data) => {
   let ob = data.reduce((prev, i) => {
     return {
@@ -106,6 +114,7 @@ const getTotalPercentage = (data) => {
   return ((ob.fact / ob.plan) * 100).toFixed(2)
 }
 
+// вспомогательная функция подсчета количества выхода в учетные часы
 const getTotalTimeExit = (data) => {
   let timegroup = {}
   data.forEach((i) => {

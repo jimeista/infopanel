@@ -1,7 +1,9 @@
 import React from 'react'
 import { Table } from 'antd'
 
+// компонента таблицы меморандума
 const InfoPanelTable = ({ data }) => {
+  // инициализация колонок таблицы
   const columns = [
     {
       /**/

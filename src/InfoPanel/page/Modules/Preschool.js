@@ -5,27 +5,35 @@ import { Spinner } from '../Spinner'
 import { firstPieOption_bar } from '../ChartOption'
 import { InfoPanelChart } from '../InfoPanelChart'
 
-const PreSchool = () => {
+const PreSchool = ({ config }) => {
   const [data, setData] = useState({})
-  const [loading, setLoading] = useState([])
+  const [loading, setLoading] = useState([]) // состояние спиннера
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
       let ob = {}
-      await axios.get('/sc-edu-institutions/api/kindergartens').then((res) => {
-        districts.forEach((d) => {
-          let arr = res.data.filter((i) => i.district === d)
-          ob = { ...ob, [d]: arr }
+      await axios
+        .get(
+          '/sc-api-gateway/secured/_/sc-edu-institutions/api/kindergartens',
+          config
+        )
+        .then((res) => {
+          districts.forEach((d) => {
+            let arr = res.data.filter(
+              (i) => i.district === d && i.status === 'Дефицит'
+            )
+            ob = { ...ob, [d]: arr }
+          })
         })
-      })
       setData(ob)
       setLoading(false)
     }
 
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   return (
     <div
@@ -37,6 +45,7 @@ const PreSchool = () => {
         )
       }}
     >
+      {/* статистика */}
       <div className={`InfoPanel_block_header`}>
         <span className='InfoPanel_Title'>
           Дефицит мест в детских садах по районам
@@ -47,8 +56,7 @@ const PreSchool = () => {
             <span>{getTotalStudentsCount(data)}</span>
           </div>
           <div className='InfoPanel_block_card'>
-            <span>Дефицит мест</span>
-            <span>{getTotalCountFullness(data)}</span>
+            {getTotalCountFullness(data)}
           </div>
         </div>
       </div>
@@ -69,9 +77,10 @@ const PreSchool = () => {
 
 export default React.memo(PreSchool)
 
+// дефолтные опции районов
 const districts = [
-  'Алмалинский район',
   'Алатауский район',
+  'Алмалинский район',
   'Ауэзовский район',
   'Бостандыкский район',
   'Жетысуский район',
@@ -80,67 +89,67 @@ const districts = [
   'Турксибский район',
 ]
 
+// вспомогательная функция подсчета заполняемости
 const getTotalStudentsCount = (data) => {
   let count = 0
 
   Object.keys(data).forEach((key) => {
     data[key].forEach((i) => {
-      count = count + i.capacity
+      count = count + i.fullness
     })
   })
 
   return count
 }
 
+// вспомогательная функция подсчета дефицита
 const getTotalCountFullness = (data) => {
-  let count = 0
+  let capacity = 0
+  let storage = 0
 
   Object.keys(data).forEach((key) => {
     data[key].forEach((i) => {
-      count = count + i['general-shortage']
+      capacity = capacity + i['capacity']
+      storage = storage + i['fullness']
     })
   })
 
-  return count
+  return (
+    <>
+      <span>{storage - capacity > 0 ? 'Дефицит' : 'Профицит'}</span>
+      <span
+        style={{
+          color: `${storage - capacity > 0 ? '#f75b5b' : 'lightgreen'}`,
+        }}
+      >
+        {Math.abs(storage - capacity)}
+      </span>
+    </>
+  )
 }
 
-/*Школы дет сады*/
+/*Преобразование данных под структуру chartjs*/
 const firstPieData_bar = (data) => {
-  let storage = []
-  let fullness = []
-
-  Object.keys(data).forEach((key) => {
-    let count = 0
-    data[key].forEach((i) => {
-      count = count + i.capacity
-    })
-    storage.push(count)
-  })
-
-  Object.keys(data).forEach((key) => {
-    let count = 0
-    data[key].forEach((i) => {
-      count = count + i['general-shortage']
-    })
-    fullness.push(count)
-  })
-
   return {
-    labels: districts.map((i) => i.split(' ')[0]),
+    labels: Object.keys(data).map((label) => label.split(' ')[0]),
     datasets: [
       {
         label: 'Проектная мощность',
         backgroundColor: '#4caf50',
         stack: 'Stack 0',
-        data: storage,
-        minBarLength: 12,
+        data: Object.values(data).map((arr) =>
+          arr.reduce((sum, next) => sum + next['capacity'], 0)
+        ),
+        minBarLength: 10,
       },
       {
         label: 'Дефицит мест',
         backgroundColor: '#f75b5b',
         stack: 'Stack 0',
-        data: fullness,
-        minBarLength: 15,
+        data: Object.values(data).map((arr) =>
+          Math.abs(arr.reduce((sum, next) => sum + next['general-shortage'], 0))
+        ),
+        minBarLength: 20,
       },
     ],
   }

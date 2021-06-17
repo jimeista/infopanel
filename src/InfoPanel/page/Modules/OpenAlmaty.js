@@ -10,27 +10,32 @@ const format = 'YYYY-MM-DD'
 let start = moment().subtract(7, 'days').format(format)
 let end = moment().format(format)
 
-const OpenAlamty = () => {
+const OpenAlamty = ({ config }) => {
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // состояние спиннера
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
 
     const fetch = async () => {
       await axios
-        .post('/sc-openalmaty/api/appeals', {
-          start,
-          end,
-        })
+        .post(
+          '/sc-api-gateway/secured/_/sc-openalmaty/api/appeals',
+          {
+            start,
+            end,
+          },
+          config
+        )
         .then((res) => {
           setData(res.data)
           setLoading(false)
         })
     }
 
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   return (
     <div
@@ -41,6 +46,7 @@ const OpenAlamty = () => {
     >
       <span className='InfoPanel_Title'>Мониторинг обращений Open Almaty</span>
       <div className='InfoPanel_block_info openAlmaty_wrap'>
+        {/* статистика */}
         <div className={`openAlmaty_item`}>
           <div className={`openAlmaty_all`}>
             <span>Обращения</span>
@@ -82,8 +88,7 @@ const OpenAlamty = () => {
 
 export default React.memo(OpenAlamty)
 
-/*OpenAlmaty*/
-
+/*Преобразование данных под структуру chartjs*/
 export const openAlmaty_data = (data) => {
   let data_ = {}
 

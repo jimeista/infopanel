@@ -4,10 +4,11 @@ import axios from 'axios'
 import { Spinner } from '../Spinner'
 import InfoPanelTable from '../InfoPanelTable'
 
-const Memorandum = () => {
+const Memorandum = ({ config }) => {
   const [data, setData] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true) // состояние спиннера
 
+  // инициализация данных
   useEffect(() => {
     setLoading(true)
 
@@ -15,7 +16,10 @@ const Memorandum = () => {
       let ob = {}
       for (let m of memorandum) {
         await axios
-          .get(`/sc-analytic-indicators/api/indicators/${m.id}/indexes`)
+          .get(
+            `/sc-api-gateway/secured/_/sc-analytic-indicators/api/indicators/${m.id}/indexes`,
+            config
+          )
           .then((res) => {
             let item = res.data.find((i) => i.date === '2020-12-31')
             ob[m.indicatorName] = {
@@ -31,8 +35,8 @@ const Memorandum = () => {
       setLoading(false)
     }
 
-    fetch()
-  }, [])
+    if (config) fetch()
+  }, [config])
 
   return (
     <div className='InfoPanel_block memorandum'>
@@ -48,6 +52,7 @@ const Memorandum = () => {
 
 export default React.memo(Memorandum)
 
+// дефолтная информация по данным для запроса и рендеринга
 const memorandum = [
   {
     item: 1,

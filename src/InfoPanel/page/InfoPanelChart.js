@@ -1,6 +1,7 @@
 import React from 'react'
 import { Line, Bar, Doughnut, Pie, Chart, HorizontalBar } from 'react-chartjs-3'
 
+// компонента выбора типа графика chartjs
 export const InfoPanelChart = ({
   option,
   dataSet,

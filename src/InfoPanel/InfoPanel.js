@@ -1,9 +1,12 @@
 import React from 'react'
-import './InfoPanel.css'
-import 'antd/dist/antd.css'
+
 import InfoPanelBlock from './page/InfoPanelBlock'
-const InfoPanel = () => {
-  return <InfoPanelBlock />
+
+import 'antd/dist/antd.css'
+import './InfoPanel.css'
+
+const InfoPanel = ({ config }) => {
+  return <InfoPanelBlock config={config} />
 }
 
 export default InfoPanel
